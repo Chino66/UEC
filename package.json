@@ -1,0 +1,8 @@
+{
+  "name": "com.chino.github.unity.uec",
+  "displayName": "UPM Environment Configure",
+  "version": "0.0.1",
+  "unity": "2020.1",
+  "description": "UPM Environment Configure UPM环境配置插件",
+  "type": "tool"
+}
