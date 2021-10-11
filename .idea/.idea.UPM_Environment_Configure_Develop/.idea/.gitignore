@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/modules.xml
+/projectSettingsUpdater.xml
+/.idea.UPM_Environment_Configure_Develop.iml
+# Datasource local storage ignored files
+/../../../../../../:\Unity Projects\UPM_Environment_Configure_Develop\.idea\.idea.UPM_Environment_Configure_Develop\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
