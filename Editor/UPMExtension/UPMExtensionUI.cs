@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using UPMEnvironmentConfigure;
 using Button = UnityEngine.UIElements.Button;
 
 namespace UEC
@@ -20,36 +22,23 @@ namespace UEC
 
         private UPMExtensionUI()
         {
-            _root = new VisualElement {name = "root"};
-            Add(_root);
+            var uxmlPath = Path.Combine(PackagePath.MainPath, @"Resources/UIElement/uec_uxml.uxml");
+            var asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlPath);
+            var root = asset.CloneTree();
+            var ussPath = Path.Combine(PackagePath.MainPath, @"Resources/UIElement/uss.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
+            root.styleSheets.Add(styleSheet);
+            Add(root);
+            
+            
 
-            var box = new Box();
-            box.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-            _root.Add(box);
-            {
-                var textField = new TextField("Username");
-                textField.value = "Enter Github Username";
-                box.Add(textField);
+            // 依赖项UI模板
+//            uxmlPath = Path.Combine(PackagePath.MainPath, @"Resources/UIElement/dependencies_item_uxml.uxml");
+//            _dependenciesItemVisualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlPath);
 
-                textField = new TextField("Token");
-                textField.value = "Enter Github Token";
-                box.Add(textField);
-            }
-
-
-            var btn = new Button();
-            btn.text = "show path";
-            _root.Add(btn);
-            btn.clickable.clicked += () =>
-            {
-                var lines = File.ReadAllLines(UPMConfig.UPMConfigPath);
-
-                foreach (var line in lines)
-                {
-                    Debug.Log(line);
-                }
-            };
+//            _dependenciesItemQueue = new Queue<VisualElement>();
         }
+
 
         private void ShowPath(Environment.SpecialFolder folder)
         {
