@@ -1,0 +1,31 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="uss.uss" />
+    <ui:VisualElement name="root">
+        <ui:VisualElement name="upmconfig_panel">
+            <ui:Label text="Preview" display-tooltip-when-elided="true" name="preview_lab" style="display: none;" />
+            <ui:Foldout text="Preview" />
+            <ui:VisualElement name="upmconfig_preview" class="unity-box" style="display: none;">
+                <ui:VisualElement name="upmconfig_item" class="unity-box" style="margin-left: 10px; margin-top: 4px;">
+                    <ui:Label text="Label" display-tooltip-when-elided="true" />
+                    <ui:Label text="Label" display-tooltip-when-elided="true" />
+                    <ui:Label text="Label" display-tooltip-when-elided="true" />
+                    <ui:Label text="Label" display-tooltip-when-elided="true" />
+                </ui:VisualElement>
+                <ui:VisualElement name="upmconfig_item" class="unity-box" style="margin-left: 10px; margin-top: 4px;">
+                    <ui:Label text="Label" display-tooltip-when-elided="true" />
+                    <ui:Label text="Label" display-tooltip-when-elided="true" />
+                    <ui:Label text="Label" display-tooltip-when-elided="true" />
+                    <ui:Label text="Label" display-tooltip-when-elided="true" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Button text="Button" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+        <ui:VisualElement name="add_item_panel" class="unity-box">
+            <ui:TextField picking-mode="Ignore" label="Username*" text="github username" max-length="-1" name="username_tf" />
+            <ui:TextField picking-mode="Ignore" label="Token*" text="github token" name="token_tf" />
+            <ui:TextField picking-mode="Ignore" label="Mail" text="github mail" name="mail_tf" readonly="true" />
+            <ui:Label text="* 必填内容" display-tooltip-when-elided="true" />
+            <ui:Button text="Add" display-tooltip-when-elided="true" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

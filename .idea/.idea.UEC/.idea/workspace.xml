@@ -2,23 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4fbd83b-8966-48df-a625-a79f350b444f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/_package_/Editor/UPMConfig.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/_package_/Editor/UPMConfig.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.UEC/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.UEC/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_package_/Editor/UPMExtension/UPMExtensionUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_package_/Editor/UPMExtension/UPMExtensionUI.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Logs/AssetImportWorker0.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/AssetImportWorker0.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-AssetImportWorker0.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-AssetImportWorker0.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe0.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe0.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe1.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe2.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe3.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe4.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe5.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe6.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe7.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,22 +18,21 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/_package_/Editor/UPMExtension/UPMExtensionUI.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="627">
-              <caret line="33" column="43" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
+            <state relative-caret-position="437">
+              <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
               <folding>
-                <marker date="1633967866599" expanded="true" signature="6:211" ph="..." />
-                <marker date="1633967866599" expanded="true" signature="226:2881" ph="{...}" />
-                <marker date="1633967866599" expanded="true" signature="276:2879" ph="{...}" />
-                <marker date="1633967866599" expanded="true" signature="330:391" ph="{...}" />
-                <marker date="1633967866599" expanded="true" signature="463:1402" ph="{...}" />
-                <marker date="1633967866599" expanded="true" signature="1186:1391" ph="{...}" />
-                <marker date="1633967866599" expanded="true" signature="1304:1377" ph="{...}" />
-                <marker date="1633967866599" expanded="true" signature="1467:1625" ph="{...}" />
-                <marker date="1633967866599" expanded="true" signature="2036:2873" ph="{...}" />
+                <marker date="1634053458719" expanded="true" signature="6:261" ph="..." />
+                <marker date="1634053458719" expanded="true" signature="276:2794" ph="{...}" />
+                <marker date="1634053458719" expanded="true" signature="326:2792" ph="{...}" />
+                <marker date="1634053458719" expanded="true" signature="380:441" ph="{...}" />
+                <marker date="1634053458719" expanded="true" signature="513:1314" ph="{...}" />
+                <marker date="1634053458719" expanded="true" signature="1006:1304" ph="/* 依赖项UI模板 ... */" />
+                <marker date="1634053458719" expanded="true" signature="1380:1538" ph="{...}" />
+                <marker date="1634053458719" expanded="true" signature="1949:2786" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -76,7 +66,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/_package_/Editor/UPMConfig.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
+            <state relative-caret-position="95">
               <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
               <folding>
                 <marker date="1633967434479" expanded="true" signature="6:30" ph="..." />
@@ -131,37 +121,6 @@
       </pane>
       <pane id="AssemblyExplorer" />
       <pane id="UnityExplorer">
-        <subPane>
-          <expand>
-            <path>
-              <item name="" type="e068e287:UnityExplorerRootNode" />
-              <item name="Assets" type="8711f2a6:AssetsRoot" />
-            </path>
-            <path>
-              <item name="" type="e068e287:UnityExplorerRootNode" />
-              <item name="Assets" type="8711f2a6:AssetsRoot" />
-              <item name="_package_" type="1045f7f1:UnityExplorerNode" />
-            </path>
-            <path>
-              <item name="" type="e068e287:UnityExplorerRootNode" />
-              <item name="Assets" type="8711f2a6:AssetsRoot" />
-              <item name="_package_" type="1045f7f1:UnityExplorerNode" />
-              <item name="Editor" type="1045f7f1:UnityExplorerNode" />
-            </path>
-            <path>
-              <item name="" type="e068e287:UnityExplorerRootNode" />
-              <item name="Assets" type="8711f2a6:AssetsRoot" />
-              <item name="_package_" type="1045f7f1:UnityExplorerNode" />
-              <item name="Editor" type="1045f7f1:UnityExplorerNode" />
-              <item name="UPMExtension" type="1045f7f1:UnityExplorerNode" />
-            </path>
-            <path>
-              <item name="" type="e068e287:UnityExplorerRootNode" />
-              <item name="Packages" type="4e2708dd:PackagesRoot" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
         <option name="show-hidden-items" value="false" />
         <option name="show-project-names" value="true" />
       </pane>
@@ -216,11 +175,12 @@
       <option name="presentableId" value="Default" />
       <updated>1633962829554</updated>
       <workItem from="1633962836182" duration="4724000" />
+      <workItem from="1634053353484" duration="106000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4724000" />
+    <option name="totallyTimeSpent" value="4830000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -233,18 +193,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="491" y="144" width="1651" height="1144" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16153362" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16341923" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="NuGet" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Unity" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Unit Tests" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -252,11 +205,19 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Errors In Solution" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="NuGet" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Unity" order="10" />
+      <window_info anchor="bottom" id="Database Changes" order="11" />
+      <window_info anchor="bottom" id="Unit Tests" order="12" />
+      <window_info anchor="bottom" id="Terminal" order="13" />
+      <window_info anchor="bottom" id="Event Log" order="14" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Errors In Solution" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,13 +236,32 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Assets/_package_/Editor/UPMExtension/UPMExtensionUI.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
+          <folding>
+            <marker date="1634053458719" expanded="true" signature="6:261" ph="..." />
+            <marker date="1634053458719" expanded="true" signature="276:2794" ph="{...}" />
+            <marker date="1634053458719" expanded="true" signature="326:2792" ph="{...}" />
+            <marker date="1634053458719" expanded="true" signature="380:441" ph="{...}" />
+            <marker date="1634053458719" expanded="true" signature="513:1314" ph="{...}" />
+            <marker date="1634053458719" expanded="true" signature="1006:1304" ph="/* 依赖项UI模板 ... */" />
+            <marker date="1634053458719" expanded="true" signature="1380:1538" ph="{...}" />
+            <marker date="1634053458719" expanded="true" signature="1949:2786" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://F:/Unity3D/UPM-Tool-Develop/Assets/_package_/_main_/Resources/UIElement/package_json_uss.uss">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/_package_/Editor/UPMExtension/UPMExtension.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="13" />
           <folding>
             <marker date="1633960197297" expanded="false" signature="6:145" ph="..." />
-            <marker date="1633960197297" expanded="true" signature="160:892" ph="{...}" />
             <marker date="1633960197297" expanded="true" signature="242:890" ph="{...}" />
             <marker date="1633960197297" expanded="true" signature="278:374" ph="{...}" />
             <marker date="1633960197297" expanded="true" signature="469:620" ph="{...}" />
@@ -295,7 +275,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/_package_/Editor/UPMConfig.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
+        <state relative-caret-position="95">
           <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
           <folding>
             <marker date="1633967434479" expanded="true" signature="6:30" ph="..." />
@@ -303,27 +283,6 @@
             <marker date="1633967434479" expanded="true" signature="74:550" ph="{...}" />
             <marker date="1633967434479" expanded="true" signature="287:392" ph="{...}" />
             <marker date="1633967434479" expanded="true" signature="470:544" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/Unity3D/UPM-Tool-Develop/Assets/_package_/_main_/Resources/UIElement/package_json_uss.uss">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/_package_/Editor/UPMExtension/UPMExtensionUI.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="33" column="43" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
-          <folding>
-            <marker date="1633967866599" expanded="true" signature="6:211" ph="..." />
-            <marker date="1633967866599" expanded="true" signature="226:2881" ph="{...}" />
-            <marker date="1633967866599" expanded="true" signature="276:2879" ph="{...}" />
-            <marker date="1633967866599" expanded="true" signature="330:391" ph="{...}" />
-            <marker date="1633967866599" expanded="true" signature="463:1402" ph="{...}" />
-            <marker date="1633967866599" expanded="true" signature="1186:1391" ph="{...}" />
-            <marker date="1633967866599" expanded="true" signature="1304:1377" ph="{...}" />
-            <marker date="1633967866599" expanded="true" signature="1467:1625" ph="{...}" />
-            <marker date="1633967866599" expanded="true" signature="2036:2873" ph="{...}" />
           </folding>
         </state>
       </provider>

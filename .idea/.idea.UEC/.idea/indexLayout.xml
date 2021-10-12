@@ -45,6 +45,7 @@
       <Path>Library/PackageCache/com.unity.textmeshpro@3.0.6</Path>
       <Path>Library/PackageCache/com.unity.timeline@1.4.8</Path>
       <Path>Library/PackageCache/com.unity.ugui@1.0.0</Path>
+      <Path>Library/PackageCache/com.unity.ui.builder@1.0.0-preview.17</Path>
       <Path>Packages</Path>
       <Path>ProjectSettings</Path>
     </explicitIncludes>
