@@ -9,6 +9,7 @@ namespace UEC
         static void ShowWindow()
         {
             var window = EditorWindow.CreateWindow<UECWindow>();
+            window.minSize = new Vector2(400, 500);
             window.titleContent = new GUIContent("UEC");
             window.Show();
         }
