@@ -8,7 +8,6 @@ namespace UEC
 {
     public class UECUI : UI
     {
-        
         public static UECUI CreateUI(VisualElement parent = null)
         {
             var ui = new UECUI();
@@ -21,8 +20,15 @@ namespace UEC
             return ui;
         }
 
+        public UECConfigModel UecConfig { get; }
+        private UPMConfigModel _upmConfig;
+        private ManifestModel _manifest;
+
         private UECUI()
         {
+            UecConfig = new UECConfigModel();
+            _upmConfig = new UPMConfigModel();
+            _manifest = new ManifestModel();
         }
 
         protected override void OnInitialize(VisualElement parent)

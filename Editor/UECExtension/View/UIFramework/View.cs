@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace UEC.UIFramework
 {
-    public abstract class View : VisualElement
+    public abstract class View //: VisualElement
     {
         public UI UI;
 
@@ -12,7 +12,7 @@ namespace UEC.UIFramework
 
         public View()
         {
-            Self = this;
+            Self = new VisualElement();
         }
 
         public void Add(VisualElement element)

@@ -31,8 +31,8 @@ namespace UEC.UIFramework
 
             var view = System.Activator.CreateInstance<T>();
             AddStyleSheet(view.Self);
-            view.Initialize(Self);
             view.SetUI(this);
+            view.Initialize(Self);
             _views.Add(type, view);
             return view;
         }

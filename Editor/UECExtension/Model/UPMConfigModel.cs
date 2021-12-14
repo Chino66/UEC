@@ -3,7 +3,7 @@ using System.IO;
 
 namespace UEC
 {
-    public class UPMConfig
+    public class UPMConfigModel
     {
         private const string UPMConfigFile = ".upmconfig.toml";
 

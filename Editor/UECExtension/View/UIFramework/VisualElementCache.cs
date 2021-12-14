@@ -19,6 +19,11 @@ namespace UEC.UIFramework
             return _root.Q<T>(query);
         }
 
+        public VisualElement Get(string query)
+        {
+            return Get<VisualElement>(query);
+        }
+
         public T Get<T>(string query) where T : VisualElement
         {
             if (!_cache.ContainsKey(query))
