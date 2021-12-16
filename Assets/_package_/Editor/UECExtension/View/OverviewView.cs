@@ -26,9 +26,11 @@ namespace UEC
 
         private ItemContext _selectedItemContext;
 
+        private Button _addBtn;
+        private Button _removeBtn;
+
         protected override void OnInitialize(VisualElement parent)
         {
-            Label s;
             var temp = parent.Q("list_view_root");
             temp.parent.Add(Self);
             Add(temp);
@@ -44,12 +46,12 @@ namespace UEC
             _noneTip = _cache.Get("none_tip");
             _itemListRoot = _cache.Get("item_list_root");
 
-            var addBtn = _cache.Get<Button>("add_item_btn");
-            addBtn.clicked += () => { AddItem(); };
+            _addBtn = _cache.Get<Button>("add_item_btn");
+            _addBtn.clicked += AddItem;
 
-            var removeBtn = _cache.Get<Button>("remove_item_btn");
-            removeBtn.clicked += () => { RemoveItem(); };
-
+            _removeBtn = _cache.Get<Button>("remove_item_btn");
+            _removeBtn.clicked += RemoveItem;
+            _removeBtn.SetEnabled(false);
             Refresh();
         }
 
@@ -63,6 +65,62 @@ namespace UEC
 
             ClearItemList();
             DrawItemList();
+        }
+
+        public void SetUsername(string name)
+        {
+            if (_selectedItemContext == null)
+            {
+                Debug.LogError("no select item");
+                return;
+            }
+
+            _selectedItemContext.ConfigItem.Username = name;
+        }
+
+        public void SetToken(string token)
+        {
+            if (_selectedItemContext == null)
+            {
+                Debug.LogError("no select item");
+                return;
+            }
+
+            _selectedItemContext.ConfigItem.Token = token;
+        }
+
+        public void AddScope(string scope)
+        {
+            if (_selectedItemContext == null)
+            {
+                Debug.LogError("no select item");
+                return;
+            }
+
+            // todo scope check
+            _selectedItemContext.ConfigItem.AddScope(scope);
+        }
+
+        public void RemoveScope(string scope)
+        {
+            if (_selectedItemContext == null)
+            {
+                Debug.LogError("no select item");
+                return;
+            }
+
+            _selectedItemContext.ConfigItem.RemoveScope(scope);
+        }
+
+        public void ModifyScope(string previousValue, string newValue)
+        {
+            if (_selectedItemContext == null)
+            {
+                Debug.LogError("no select item");
+                return;
+            }
+
+            _selectedItemContext.ConfigItem.ModifyScope(previousValue, newValue);
         }
 
         private void AddItem()
@@ -89,11 +147,15 @@ namespace UEC
 
             var temp = _itemListRoot;
             var element = _selectedItemContext.Element;
+            var config = _selectedItemContext.ConfigItem;
             var index = temp.IndexOf(element);
             var ev = temp.ElementAt(index);
             _pool.Return(ev);
             temp.RemoveAt(index);
+            UI.UecConfig.RemoveItem(config);
             _selectedItemContext = null;
+            _removeBtn.SetEnabled(false);
+            UI.GetView<DetailView>().Hide();
         }
 
         private void DrawItemList()
@@ -138,8 +200,9 @@ namespace UEC
             }
 
             _selectedItemContext = context;
+            _removeBtn.SetEnabled(true);
             context.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0.25f));
-            UI.GetView<DetailView>().ShowItemDetail(context);
+            UI.GetView<DetailView>().Refresh(context);
         }
 
         private void OnItemUnSelect(ItemContext context)

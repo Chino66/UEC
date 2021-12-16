@@ -44,6 +44,14 @@ namespace UEC
 
             AddView<OverviewView>();
             AddView<DetailView>();
+            AddView<OperateView>();
+        }
+
+        public void Refresh()
+        {
+            GetView<OverviewView>().Refresh();
+            GetView<DetailView>().Refresh(null);
+            GetView<OperateView>().Refresh();
         }
     }
 }
