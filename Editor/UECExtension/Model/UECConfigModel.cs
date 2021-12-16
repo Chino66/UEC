@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Unity.Plastic.Newtonsoft.Json;
+using UnityEngine;
 
 namespace UEC
 {
@@ -9,7 +10,7 @@ namespace UEC
     {
         public string Username;
         public string Token;
-        public List<string> Scopes;
+        public List<string> Scopes = new List<string>();
 
         public string GetScopesOverview()
         {
@@ -31,6 +32,40 @@ namespace UEC
 
             return context;
         }
+
+        public void AddScope(string scope)
+        {
+            if (Scopes.Contains(scope))
+            {
+                Debug.LogError($"{scope} was already exist");
+                return;
+            }
+
+            Scopes.Add(scope);
+        }
+
+        public void RemoveScope(string scope)
+        {
+            if (!Scopes.Contains(scope))
+            {
+                Debug.LogError($"{scope} is not exist");
+                return;
+            }
+
+            Scopes.Remove(scope);
+        }
+
+        public void ModifyScope(string old, string scope)
+        {
+            if (!Scopes.Contains(old))
+            {
+                Debug.LogError($"{old} is not exist");
+                return;
+            }
+
+            var index = Scopes.IndexOf(old);
+            Scopes[index] = scope;
+        }
     }
 
     public class UECConfigModel
@@ -48,10 +83,13 @@ namespace UEC
 
         public List<ConfigItem> Items => _items;
 
+        public bool IsDirty { get; set; } = false;
+
         public UECConfigModel()
         {
             LoadConfig();
         }
+
 
         private void LoadConfig()
         {
@@ -72,9 +110,63 @@ namespace UEC
             _items = JsonConvert.DeserializeObject<List<ConfigItem>>(json) ?? new List<ConfigItem>();
         }
 
+        public bool AddItem(ConfigItem item)
+        {
+            if (Items.Contains(item))
+            {
+                return false;
+            }
+
+            Items.Add(item);
+            IsDirty = true;
+            return true;
+        }
+
+        public bool RemoveItemAt(int index)
+        {
+            IsDirty = true;
+            return Items.Count > index && RemoveItem(Items[index]);
+        }
+
+        public bool RemoveItem(ConfigItem item)
+        {
+            if (!Items.Contains(item))
+            {
+                return false;
+            }
+
+            Items.Remove(item);
+            IsDirty = true;
+            return true;
+        }
+
+        public void SetUsername(ConfigItem item, string username)
+        {
+            if (item == null)
+            {
+                Debug.LogError("item is null");
+                return;
+            }
+
+            item.Username = username;
+        }
+
         private void CreateConfig()
         {
             Write("");
+        }
+
+        public void Revert()
+        {
+            LoadConfig();
+            IsDirty = false;
+        }
+
+        public void Apply()
+        {
+            SaveConfig();
+            LoadConfig();
+            IsDirty = false;
         }
 
         private void SaveConfig()
