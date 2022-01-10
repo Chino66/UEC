@@ -1,3 +1,4 @@
+using UEC.Event;
 using UEC.UIFramework;
 using UnityEngine.UIElements;
 
@@ -19,14 +20,16 @@ namespace UEC
             _revertBtn = temp.Q<Button>("revert_btn");
             _revertBtn.clicked += () =>
             {
-                UI.UecConfig.Revert();
+//                UI.UecConfig.Revert();
+                EventCenter.SendEvent("UECConfigModel", "Revert");
                 UI.Refresh();
             };
 
             _applyBtn = temp.Q<Button>("apply_btn");
             _applyBtn.clicked += () =>
             {
-                UI.UecConfig.Apply();
+//                UI.UecConfig.Apply();
+                EventCenter.SendEvent("UECConfigModel", "Apply");
                 UI.Refresh();
             };
 
@@ -35,9 +38,9 @@ namespace UEC
 
         public void Refresh()
         {
-            var isDirty = UI.UecConfig.IsDirty;
-            _applyBtn.SetEnabled(isDirty);
-            _revertBtn.SetEnabled(isDirty);
+//            var isDirty = UI.UecConfig.IsDirty;
+//            _applyBtn.SetEnabled(isDirty);
+//            _revertBtn.SetEnabled(isDirty);
         }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using UEC.Event;
 using UnityEditor;
 using UnityEngine;
 
@@ -5,6 +7,8 @@ namespace UEC
 {
     public class UECWindow : EditorWindow
     {
+        private ModelCollection _collection;
+
         [MenuItem("Tools/UECWindow")]
         static void ShowWindow()
         {
@@ -16,8 +20,14 @@ namespace UEC
 
         private void OnEnable()
         {
+            _collection = new ModelCollection();
             var root = UECUI.CreateUI();
             rootVisualElement.Add(root.Self);
+        }
+
+        private void OnDisable()
+        {
+            EventCenter.Clear();
         }
     }
 }

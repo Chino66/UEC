@@ -1,6 +1,8 @@
 using System.IO;
+using UEC.Event;
 using UEC.UIFramework;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 using UPMEnvironmentConfigure;
 
@@ -20,15 +22,16 @@ namespace UEC
             return ui;
         }
 
-        public UECConfigModel UecConfig { get; }
-        private UPMConfigModel _upmConfig;
-        private ManifestModel _manifest;
+
+//        public UECConfigModel UecConfig { get; }
+//        private UPMConfigModel _upmConfig;
+//        private ManifestModel _manifest;
 
         private UECUI()
         {
-            UecConfig = new UECConfigModel();
-            _upmConfig = new UPMConfigModel();
-            _manifest = new ManifestModel();
+//            UecConfig = new UECConfigModel();
+//            _upmConfig = new UPMConfigModel();
+//            _manifest = new ManifestModel();
         }
 
         protected override void OnInitialize(VisualElement parent)
@@ -42,6 +45,11 @@ namespace UEC
             AddStyleSheet(styleSheet);
             Add(temp);
 
+            Button btn = new Button();
+            btn.text = "test";
+            btn.clicked += Test;
+            temp.Add(btn);
+
             AddView<OverviewView>();
             AddView<DetailView>();
             AddView<OperateView>();
@@ -52,6 +60,19 @@ namespace UEC
             GetView<OverviewView>().Refresh();
             GetView<DetailView>().Refresh(null);
             GetView<OperateView>().Refresh();
+        }
+
+        private void Test()
+        {
+//            var s = new ConfigItem();
+//            TheType(s);
+            EventCenter.SendEvent("UECConfigModel", "ModelTestMethod", 6, "message");
+        }
+
+        private void TheType(object obj)
+        {
+            var type = obj.GetType();
+            Debug.Log($"the type is {type.Name}");
         }
     }
 }
