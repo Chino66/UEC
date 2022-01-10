@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UEC.Event;
 using UEC.UIFramework;
 using UnityEditor;
 using UnityEngine;
@@ -58,8 +59,8 @@ namespace UEC
 
         public void Refresh()
         {
-            var items = UI.UecConfig.Items;
-
+//            var items = UI.UecConfig.Items;
+            var items = (List<ConfigItem>) EventCenter.SendEvent("UECConfigModel", "GetItems");
             _noneTip.SetDisplay(items.Count <= 0);
             _itemListRoot.SetDisplay(items.Count > 0);
 
@@ -152,7 +153,8 @@ namespace UEC
             var ev = temp.ElementAt(index);
             _pool.Return(ev);
             temp.RemoveAt(index);
-            UI.UecConfig.RemoveItem(config);
+//            UI.UecConfig.RemoveItem(config);
+            EventCenter.SendEvent("UECConfigModel", "RemoveItem", config);
             _selectedItemContext = null;
             _removeBtn.SetEnabled(false);
             UI.GetView<DetailView>().Hide();
@@ -160,7 +162,8 @@ namespace UEC
 
         private void DrawItemList()
         {
-            var items = UI.UecConfig.Items;
+//            var items = UI.UecConfig.Items;
+            var items = (List<ConfigItem>) EventCenter.SendEvent("UECConfigModel", "GetItems");
             for (int i = 0; i < items.Count; i++)
             {
                 var element = _pool.Get();

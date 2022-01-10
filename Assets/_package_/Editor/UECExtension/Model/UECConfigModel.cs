@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UEC.Event;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace UEC
 {
+    [Serializable]
     public class ConfigItem
     {
         public string Username;
@@ -70,6 +72,8 @@ namespace UEC
 
     public class UECConfigModel
     {
+        #region Static
+
         private const string UECConfigFile = ".uecconfig";
 
         public static string UECConfigPath => Path.Combine(UserProfilePath(), UECConfigFile);
@@ -79,6 +83,9 @@ namespace UEC
             return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         }
 
+        #endregion
+
+
         private List<ConfigItem> _items;
 
         public List<ConfigItem> Items => _items;
@@ -87,11 +94,18 @@ namespace UEC
 
         public UECConfigModel()
         {
+            EventCenter.Register(this);
             LoadConfig();
         }
 
+        [EventTag]
+        private void ModelTestMethod(int index, string msg)
+        {
+            Debug.Log($"{index}, {msg}");
+        }
 
         private void LoadConfig()
+
         {
             var file = new FileInfo(UECConfigPath);
 
@@ -110,6 +124,13 @@ namespace UEC
             _items = JsonConvert.DeserializeObject<List<ConfigItem>>(json) ?? new List<ConfigItem>();
         }
 
+        [EventTag]
+        public List<ConfigItem> GetItems()
+        {
+            return Items;
+        }
+
+        [EventTag]
         public bool AddItem(ConfigItem item)
         {
             if (Items.Contains(item))
@@ -122,13 +143,15 @@ namespace UEC
             return true;
         }
 
-        public bool RemoveItemAt(int index)
+        [EventTag]
+        public bool RemoveItemByIndex(int index)
         {
             IsDirty = true;
             return Items.Count > index && RemoveItem(Items[index]);
         }
 
-        public bool RemoveItem(ConfigItem item)
+        [EventTag]
+        private bool RemoveItem(ConfigItem item)
         {
             if (!Items.Contains(item))
             {
@@ -139,6 +162,8 @@ namespace UEC
             IsDirty = true;
             return true;
         }
+        
+        
 
         public void SetUsername(ConfigItem item, string username)
         {
@@ -156,12 +181,14 @@ namespace UEC
             Write("");
         }
 
+        [EventTag]
         public void Revert()
         {
             LoadConfig();
             IsDirty = false;
         }
 
+        [EventTag]
         public void Apply()
         {
             SaveConfig();
