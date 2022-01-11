@@ -22,17 +22,7 @@ namespace UEC
             return ui;
         }
 
-
-//        public UECConfigModel UecConfig { get; }
-//        private UPMConfigModel _upmConfig;
-//        private ManifestModel _manifest;
-
-        private UECUI()
-        {
-//            UecConfig = new UECConfigModel();
-//            _upmConfig = new UPMConfigModel();
-//            _manifest = new ManifestModel();
-        }
+        public ItemDraftContext DraftContext { get; private set; }
 
         protected override void OnInitialize(VisualElement parent)
         {
@@ -44,11 +34,6 @@ namespace UEC
             temp.styleSheets.Add(styleSheet);
             AddStyleSheet(styleSheet);
             Add(temp);
-
-            Button btn = new Button();
-            btn.text = "test";
-            btn.clicked += Test;
-            temp.Add(btn);
 
             AddView<OverviewView>();
             AddView<DetailView>();
@@ -62,17 +47,9 @@ namespace UEC
             GetView<OperateView>().Refresh();
         }
 
-        private void Test()
+        public void SetDraftContext(ItemDraftContext context)
         {
-//            var s = new ConfigItem();
-//            TheType(s);
-            EventCenter.SendEvent("UECConfigModel", "ModelTestMethod", 6, "message");
-        }
-
-        private void TheType(object obj)
-        {
-            var type = obj.GetType();
-            Debug.Log($"the type is {type.Name}");
+            DraftContext = context;
         }
     }
 }
