@@ -10,6 +10,11 @@ namespace UEC
 {
     public class ScopeContext
     {
+        /// <summary>
+        /// 对应列表索引值
+        /// </summary>
+        public int index;
+
         public string Scope;
         public VisualElement Element;
     }
@@ -24,7 +29,9 @@ namespace UEC
         private VisualElement _noneTip;
 
 //        private VisualElement _selectedScope;
-        private ScopeContext _selecedScopeContext;
+        private ScopeContext _selectedScopeContext;
+
+        private ItemDraftContext DraftContext => UI.DraftContext;
 
         protected override void OnInitialize(VisualElement parent)
         {
@@ -38,99 +45,96 @@ namespace UEC
             _pool = new VisualElementPool(itemAsset);
 
             _nameTf = _cache.Get<TextField>("name_tf");
-//            _nameTf.RegisterValueChangedCallback(evt =>
-//            {
-//                // todo name check
-//                // todo vm
-//                UI.GetView<OverviewView>().SetUsername(evt.newValue);
-//                
-//            });
+            _nameTf.RegisterValueChangedCallback(evt =>
+            {
+                DraftContext.ConfigItemDraft.Username = evt.newValue;
+                DraftContext.IsDirty = true;
+            });
             _tokenTf = _cache.Get<TextField>("token_tf");
-//            _tokenTf.RegisterValueChangedCallback(evt =>
-//            {
-//                // todo token check
-//                // todo vm
-//                UI.GetView<OverviewView>().SetToken(evt.newValue);
-//            });
+            _tokenTf.RegisterValueChangedCallback(evt =>
+            {
+                DraftContext.ConfigItemDraft.Token = evt.newValue;
+                DraftContext.IsDirty = true;
+            });
 
             _scopeListRoot = _cache.Get("scope_item_list_root");
             _noneTip = _cache.Get("none_tip");
 
             var addBtn = _cache.Get<Button>("add_item_btn");
-            addBtn.clicked += () =>
-            {
-                // todo 1. view向model发起数据操作请求
-                // todo 2. model执行数据操作请求,将结果返回给view
-                // todo 3. view收到结果,刷新view
-                AddScope();
-            };
-
+            addBtn.clicked += AddScope;
 
             var removeBtn = _cache.Get<Button>("remove_item_btn");
-            removeBtn.clicked += () => { RemoveSelectScope(); };
+            removeBtn.clicked += RemoveSelectScope;
 
             Hide();
         }
 
 
-        public void Refresh(ItemContext context)
+        public void Refresh(ItemDraftContext draftContext)
         {
-            if (context == null)
+            if (draftContext == null)
             {
                 Hide();
                 return;
             }
 
-            ShowItemDetail(context);
+            ShowItemDetail(draftContext);
         }
+
+        private void ShowItemDetail(ItemDraftContext draftContext)
+        {
+            UI.SetDraftContext(draftContext);
+
+            var config = draftContext.ConfigItemDraft;
+            _nameTf.value = config.Username;
+            _tokenTf.value = config.Token;
+
+            ClearScopeList();
+            DrawScopeList(draftContext);
+
+            Show();
+        }
+
 
         private void AddScope()
         {
             var scopeContext = new ScopeContext {Element = _pool.Get(), Scope = "*"};
-            _selecedScopeContext = scopeContext;
-//            UI.GetView<OverviewView>().AddScope(_selecedScopeContext.Scope);
-            EventCenter.SendEvent("UECConfigModel", "AddScope", _selecedScopeContext.Scope);
-            DrawScope(scopeContext);
+            _selectedScopeContext = scopeContext;
+            var rst = DraftContext.ConfigItemDraft.AddScope(scopeContext.Scope);
+            if (rst)
+            {
+                DrawScope(scopeContext);
+            }
         }
 
         private void RemoveSelectScope()
         {
-            if (_selecedScopeContext == null)
+            if (_selectedScopeContext == null)
             {
                 return;
             }
 
-            var index = _scopeListRoot.IndexOf(_selecedScopeContext.Element);
+            var index = _scopeListRoot.IndexOf(_selectedScopeContext.Element);
             if (index < 0)
             {
                 return;
             }
 
-//            UI.GetView<OverviewView>().RemoveScope(_selecedScopeContext.Scope);
-            EventCenter.SendEvent("UECConfigModel", "RemoveScope", _selecedScopeContext.Scope);
-            RemoveScope(index);
+            var rst = DraftContext.ConfigItemDraft.RemoveScope(_selectedScopeContext.Scope);
+            if (rst)
+            {
+                RemoveScope(index);
+            }
 
-            _selecedScopeContext = null;
+            _selectedScopeContext = null;
         }
 
-        public void ShowItemDetail(ItemContext context)
+
+        private void DrawScopeList(ItemDraftContext draftContext)
         {
-            var config = context.ConfigItem;
-            _nameTf.value = config.Username;
-            _tokenTf.value = config.Token;
-
-            ClearScopeList();
-            DrawScopeList(context);
-
-            Show();
-        }
-
-        private void DrawScopeList(ItemContext context)
-        {
-            var config = context.ConfigItem;
+            var config = draftContext.ConfigItemDraft;
 
             var hasScopes = config.Scopes != null && config.Scopes.Count > 0;
-
             _noneTip.SetDisplay(!hasScopes);
             _scopeListRoot.SetDisplay(hasScopes);
 
@@ -156,11 +160,21 @@ namespace UEC
             tf.RegisterCallback<ChangeEvent<string>, ScopeContext>((evt, ctx) =>
                 {
                     ctx.Scope = evt.newValue;
-                    UI.GetView<OverviewView>().ModifyScope(evt.previousValue, evt.newValue);
-                    EventCenter.SendEvent("UECConfigModel", "ModifyScope", evt.previousValue, evt.newValue);
+                    var rst = DraftContext.ConfigItemDraft.ModifyScope(evt.previousValue, evt.newValue);
+                    if (rst)
+                    {
+                        // todo 
+                    }
+
+//                    UI.GetView<OverviewView>().ModifyScope(evt.previousValue, evt.newValue);
+//                    EventCenter.SendEvent("UECConfigModel", "ModifyScope", evt.previousValue, evt.newValue);
                 },
                 context);
-            element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) => { _selecedScopeContext = ctx; }, context);
+            element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) => { _selectedScopeContext = ctx; }, context);
+
+            var hasScopes = _scopeListRoot.childCount > 0;
+            _noneTip.SetDisplay(!hasScopes);
+            _scopeListRoot.SetDisplay(hasScopes);
         }
 
         private void ClearScopeList()
