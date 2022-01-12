@@ -11,16 +11,53 @@ using UPMEnvironmentConfigure;
 
 namespace UEC
 {
+    public class ConfigItemInfo
+    {
+        public string Username;
+        public string Token;
+        public List<string> Scopes = new List<string>();
+
+        public void Clone(ConfigItemInfo info)
+        {
+            Username = info.Username;
+            Token = info.Token;
+            Scopes = new List<string>(info.Scopes);
+        }
+    }
+
     /// <summary>
     /// todo 需要实现一个数据绑定,ConfigItemDraft和View元素的绑定,所有修改都通过View变化到ConfigItemDraft上,然后最终更新Model层
     /// todo list通过index作为key关联
     /// </summary>
     public class ConfigItemDraft
     {
-        public string OriginalUsername;
-        public string Username;
-        public string Token;
-        public List<string> Scopes = new List<string>();
+        private ConfigItemInfo _originalInfo;
+        private ConfigItemInfo _info;
+
+        public string OriginalUsername
+        {
+            get => _originalInfo.Username;
+            set => _originalInfo.Username = value;
+        }
+
+        public string Username
+        {
+            get => _info.Username;
+            set => _info.Username = value;
+        }
+
+        public string Token
+        {
+            get => _info.Token;
+            set => _info.Token = value;
+        }
+
+        public List<string> Scopes
+        {
+            get => _info.Scopes;
+            private set => _info.Scopes = value;
+        }
+
 
         public ConfigItemDraft(string username, string token, List<string> scopes)
         {
@@ -35,10 +72,17 @@ namespace UEC
 
         private void Instantiate(string username, string token, List<string> scopes)
         {
-            OriginalUsername = username;
+            _info = new ConfigItemInfo();
+            _originalInfo = new ConfigItemInfo();
             Username = username;
             Token = token;
             Scopes = scopes;
+            _originalInfo.Clone(_info);
+        }
+
+        public void Revert()
+        {
+            _info.Clone(_originalInfo);
         }
 
         public string GetScopesOverview()
@@ -106,10 +150,19 @@ namespace UEC
         public ConfigItemDraft ConfigItemDraft;
         public bool IsDirty;
         public bool IsNew;
+
+        public void Revert()
+        {
+            ConfigItemDraft.Revert();
+            IsDirty = false;
+        }
     }
 
     public class OverviewView : View<UECUI>
     {
+        private const string Message =
+            "You have unsaved changes which would be lost id you continue this operation. Do you want to continue and discard unsaved changes?";
+
         private VisualElementCache _cache;
         private VisualElementPool _pool;
 
@@ -146,7 +199,6 @@ namespace UEC
             Refresh();
         }
 
-
         public void Refresh()
         {
             var count = (int) EventCenter.SendEvent("UECConfigModel", "GetItemsCount");
@@ -157,64 +209,38 @@ namespace UEC
             DrawItemList();
         }
 
-//        public void SetUsername(string name)
-//        {
-//            if (_selectedItemDraftContext == null)
-//            {
-//                Debug.LogError("no select item");
-//                return;
-//            }
-//
-//            _selectedItemDraftContext.ConfigItemDraft.Username = name;
-//        }
-
-//        public void SetToken(string token)
-//        {
-//            if (_selectedItemDraftContext == null)
-//            {
-//                Debug.LogError("no select item");
-//                return;
-//            }
-//
-//            _selectedItemDraftContext.ConfigItemDraft.Token = token;
-//        }
-
-//        public void AddScope(string scope)
-//        {
-//            if (_selectedItemDraftContext == null)
-//            {
-//                Debug.LogError("no select item");
-//                return;
-//            }
-//
-//            // todo scope check
-//            _selectedItemDraftContext.ConfigItemDraft.AddScope(scope);
-//        }
-//
-//        public void RemoveScope(string scope)
-//        {
-//            if (_selectedItemDraftContext == null)
-//            {
-//                Debug.LogError("no select item");
-//                return;
-//            }
-//
-//            _selectedItemDraftContext.ConfigItemDraft.RemoveScope(scope);
-//        }
-
-        public void ModifyScope(string previousValue, string newValue)
+        private bool DraftChangeTip()
         {
             if (DraftContext == null)
             {
-                Debug.LogError("no select item");
-                return;
+                return false;
             }
 
-            DraftContext.ConfigItemDraft.ModifyScope(previousValue, newValue);
+            if (DraftContext.IsDirty == false)
+            {
+                return false;
+            }
+
+            if (EditorUtility.DisplayDialog("Discard unsaved changes", Message, "Continue", "Cancel"))
+            {
+                // 继续编辑
+                return true;
+            }
+            else
+            {
+                // 取消编辑,还原修改
+                DraftContext.Revert();
+                return false;
+            }
         }
 
         private void AddItem()
         {
+            if (DraftChangeTip())
+            {
+                return;
+            }
+
             var element = _pool.Get();
 
             var context = new ItemDraftContext
@@ -290,6 +316,11 @@ namespace UEC
 
         private void OnItemSelect(ItemDraftContext draftContext)
         {
+            if (DraftChangeTip())
+            {
+                return;
+            }
+
             if (DraftContext != null)
             {
                 OnItemUnSelect(DraftContext);
@@ -302,25 +333,8 @@ namespace UEC
             UI.GetView<DetailView>().Refresh(draftContext);
         }
 
-        private const string Message =
-            "You have unsaved changes which would be lost id you continue this operation. Do you want to continue and discard unsaved changes?";
-
         private void OnItemUnSelect(ItemDraftContext draftContext)
         {
-            if (draftContext.IsDirty)
-            {
-//                if (EditorUtility.DisplayDialog("Discard unsaved changes ", Message, "Continue", "Cancel"))
-//                {
-//                    // todo unsaved changes
-//                    Debug.Log("click Continue btn");
-//                }
-//                else
-//                {
-//                    // todo return editor
-//                    Debug.Log("click Cancel btn");
-//                }
-            }
-
             draftContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0));
         }
 

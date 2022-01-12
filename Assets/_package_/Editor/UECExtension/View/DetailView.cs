@@ -47,12 +47,22 @@ namespace UEC
             _nameTf = _cache.Get<TextField>("name_tf");
             _nameTf.RegisterValueChangedCallback(evt =>
             {
+                if (DraftContext.ConfigItemDraft.Username == evt.newValue)
+                {
+                    return;
+                }
+
                 DraftContext.ConfigItemDraft.Username = evt.newValue;
                 DraftContext.IsDirty = true;
             });
             _tokenTf = _cache.Get<TextField>("token_tf");
             _tokenTf.RegisterValueChangedCallback(evt =>
             {
+                if (DraftContext.ConfigItemDraft.Token == evt.newValue)
+                {
+                    return;
+                }
+
                 DraftContext.ConfigItemDraft.Token = evt.newValue;
                 DraftContext.IsDirty = true;
             });
