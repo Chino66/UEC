@@ -22,6 +22,9 @@ namespace UEC
             return ui;
         }
 
+        /// <summary>
+        /// 当前选中的正在编辑的上下文对象
+        /// </summary>
         public ItemDraftContext DraftContext { get; private set; }
 
         protected override void OnInitialize(VisualElement parent)
