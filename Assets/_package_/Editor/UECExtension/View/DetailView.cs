@@ -23,8 +23,10 @@ namespace UEC
     {
         private VisualElementCache _cache;
         private VisualElementPool _pool;
+        
         private TextField _nameTf;
         private TextField _tokenTf;
+        
         private VisualElement _scopeListRoot;
         private VisualElement _noneTip;
 

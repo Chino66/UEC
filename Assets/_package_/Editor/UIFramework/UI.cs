@@ -6,6 +6,8 @@ namespace UEC.UIFramework
 {
     public class UI : View
     {
+        public Context Context;
+
         private Dictionary<Type, View> _views;
 
         private List<StyleSheet> _styleSheets;
@@ -54,6 +56,21 @@ namespace UEC.UIFramework
             }
 
             return null;
+        }
+
+        public virtual void SetContext(Context ctx)
+        {
+            this.Context = ctx;
+        }
+    }
+
+    public class UI<T> : UI where T : Context
+    {
+        public T Context;
+
+        public override void SetContext(Context ctx)
+        {
+            this.Context = (T) ctx;
         }
     }
 }
