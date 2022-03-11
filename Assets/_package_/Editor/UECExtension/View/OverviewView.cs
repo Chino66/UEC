@@ -24,7 +24,7 @@ namespace UEC
         private VisualElement _noneTip;
         private VisualElement _itemListRoot;
 
-        private ItemContext _selectedItemContext;
+        // private ItemContext _selectedItemContext;
 
         private Button _addBtn;
         private Button _removeBtn;
@@ -67,61 +67,61 @@ namespace UEC
             DrawItemList();
         }
 
-        public void SetUsername(string name)
-        {
-            if (_selectedItemContext == null)
-            {
-                Debug.LogError("no select item");
-                return;
-            }
+        // public void SetUsername(string name)
+        // {
+        //     if (_selectedItemContext == null)
+        //     {
+        //         Debug.LogError("no select item");
+        //         return;
+        //     }
+        //
+        //     _selectedItemContext.ConfigItem.Username = name;
+        // }
 
-            _selectedItemContext.ConfigItem.Username = name;
-        }
+        // public void SetToken(string token)
+        // {
+        //     if (_selectedItemContext == null)
+        //     {
+        //         Debug.LogError("no select item");
+        //         return;
+        //     }
+        //
+        //     _selectedItemContext.ConfigItem.Token = token;
+        // }
 
-        public void SetToken(string token)
-        {
-            if (_selectedItemContext == null)
-            {
-                Debug.LogError("no select item");
-                return;
-            }
+        // public void AddScope(string scope)
+        // {
+        //     if (_selectedItemContext == null)
+        //     {
+        //         Debug.LogError("no select item");
+        //         return;
+        //     }
+        //
+        //     // todo scope check
+        //     _selectedItemContext.ConfigItem.AddScope(scope);
+        // }
 
-            _selectedItemContext.ConfigItem.Token = token;
-        }
-
-        public void AddScope(string scope)
-        {
-            if (_selectedItemContext == null)
-            {
-                Debug.LogError("no select item");
-                return;
-            }
-
-            // todo scope check
-            _selectedItemContext.ConfigItem.AddScope(scope);
-        }
-
-        public void RemoveScope(string scope)
-        {
-            if (_selectedItemContext == null)
-            {
-                Debug.LogError("no select item");
-                return;
-            }
-
-            _selectedItemContext.ConfigItem.RemoveScope(scope);
-        }
-
-        public void ModifyScope(string previousValue, string newValue)
-        {
-            if (_selectedItemContext == null)
-            {
-                Debug.LogError("no select item");
-                return;
-            }
-
-            _selectedItemContext.ConfigItem.ModifyScope(previousValue, newValue);
-        }
+        // public void RemoveScope(string scope)
+        // {
+        //     if (_selectedItemContext == null)
+        //     {
+        //         Debug.LogError("no select item");
+        //         return;
+        //     }
+        //
+        //     _selectedItemContext.ConfigItem.RemoveScope(scope);
+        // }
+        //
+        // public void ModifyScope(string previousValue, string newValue)
+        // {
+        //     if (_selectedItemContext == null)
+        //     {
+        //         Debug.LogError("no select item");
+        //         return;
+        //     }
+        //
+        //     _selectedItemContext.ConfigItem.ModifyScope(previousValue, newValue);
+        // }
 
         private void AddItem()
         {
