@@ -21,11 +21,13 @@ namespace UEC
             ui.Initialize(parent);
             return ui;
         }
+        
+        public UECContext Context;
 
-        /// <summary>
-        /// 当前选中的正在编辑的上下文对象
-        /// </summary>
-        public ItemDraftContext DraftContext { get; private set; }
+        private UECUI()
+        {
+            Context = new UECContext();
+        }
 
         protected override void OnInitialize(VisualElement parent)
         {
@@ -46,13 +48,13 @@ namespace UEC
         public void Refresh()
         {
             GetView<OverviewView>().Refresh();
-            GetView<DetailView>().Refresh(null);
+            GetView<DetailView>().Refresh();
             GetView<OperateView>().Refresh();
         }
 
-        public void SetDraftContext(ItemDraftContext context)
-        {
-            DraftContext = context;
-        }
+        // public void SetDraftContext(ItemDraftContext context)
+        // {
+        //     DraftContext = context;
+        // }
     }
 }

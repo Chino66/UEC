@@ -7,12 +7,10 @@ namespace UEC
 {
     public class UECWindow : EditorWindow
     {
-        private ModelCollection _collection;
-
         [MenuItem("Tools/UECWindow")]
-        static void ShowWindow()
+        private static void ShowWindow()
         {
-            var window = EditorWindow.CreateWindow<UECWindow>();
+            var window = CreateWindow<UECWindow>();
             window.minSize = new Vector2(400, 500);
             window.titleContent = new GUIContent("UEC");
             window.Show();
@@ -20,14 +18,8 @@ namespace UEC
 
         private void OnEnable()
         {
-            _collection = new ModelCollection();
             var root = UECUI.CreateUI();
             rootVisualElement.Add(root.Self);
-        }
-
-        private void OnDisable()
-        {
-            EventCenter.Clear();
         }
     }
 }

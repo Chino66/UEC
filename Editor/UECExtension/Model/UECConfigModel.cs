@@ -9,11 +9,81 @@ using UnityEngine;
 namespace UEC
 {
     [Serializable]
-    class ConfigItem
+    public class ConfigItem
     {
         public string Username;
         public string Token;
         public List<string> Scopes = new List<string>();
+
+        // private void Instantiate(string username, string token, List<string> scopes)
+        // {
+        //     Username = username;
+        //     Token = token;
+        //     Scopes = scopes;
+        // }
+
+        // public void Revert()
+        // {
+        //     _info.Clone(_originalInfo);
+        // }
+
+        public string GetScopesOverview()
+        {
+            var context = "*";
+            if (Scopes == null)
+            {
+                return context;
+            }
+
+            context = "";
+            for (int i = 0; i < Scopes.Count; i++)
+            {
+                context += Scopes[i];
+                if (i < Scopes.Count - 1)
+                {
+                    context += "|";
+                }
+            }
+
+            return context;
+        }
+
+        public bool AddScope(string scope)
+        {
+            if (Scopes.Contains(scope))
+            {
+                Debug.LogError($"{scope} was already exist");
+                return false;
+            }
+
+            Scopes.Add(scope);
+            return true;
+        }
+
+        public bool RemoveScope(string scope)
+        {
+            if (!Scopes.Contains(scope))
+            {
+                Debug.LogError($"{scope} is not exist");
+                return false;
+            }
+
+            Scopes.Remove(scope);
+            return true;
+        }
+
+        public bool ModifyScope(string old, string scope)
+        {
+            if (!Scopes.Contains(old))
+            {
+                Debug.LogError($"{old} is not exist");
+                return false;
+            }
+
+            var index = Scopes.IndexOf(old);
+            Scopes[index] = scope;
+            return true;
+        }
     }
 
     public class UECConfigModel
@@ -31,16 +101,14 @@ namespace UEC
 
         #endregion
 
-
-//        private List<(string, string, List<string>)> _items;
-
         private List<ConfigItem> _items;
+
+        private List<ConfigItem> Items => _items;
 
         public bool IsDirty { get; set; } = false;
 
         public UECConfigModel()
         {
-            EventCenter.Register(this);
             LoadConfig();
         }
 
@@ -64,30 +132,16 @@ namespace UEC
             _items = JsonConvert.DeserializeObject<List<ConfigItem>>(json) ?? new List<ConfigItem>();
         }
 
+        // public List<ConfigItem> GetItems()
+        // {
+        //     return _items;
+        // }
 
-        /// <summary>
-        /// todo 思考更好的方式将数据下发给View同时数据格式解耦
-        /// </summary>
-        /// <returns></returns>
-        [EventTag]
-        public List<(string, string, List<string>)> GetItems()
-        {
-            var list = new List<(string, string, List<string>)>(_items.Count);
-            foreach (var item in _items)
-            {
-                list.Add((item.Username, item.Token, item.Scopes));
-            }
-
-            return list;
-        }
-
-        [EventTag]
         public int GetItemsCount()
         {
             return _items.Count;
         }
 
-        [EventTag]
         private bool AddItem(string username, string token, List<string> scopes)
         {
             // todo check
@@ -106,14 +160,13 @@ namespace UEC
                 Token = token,
                 Scopes = scopes
             };
-            
+
             _items.Add(ci);
             IsDirty = true;
             return true;
         }
 
-        [EventTag]
-        private bool RemoveItem(string username)
+        public bool RemoveItem(string username)
         {
             var item = _items.Where(i => i.Username == username).Select(i => i);
             if (!item.Any())
@@ -126,11 +179,10 @@ namespace UEC
             return true;
         }
 
-        [EventTag]
-        private bool ModifyItem(string originalUsername, string username, string token, List<string> scopes)
+        public bool ModifyItem(string originalUsername, string username, string token, List<string> scopes)
         {
             // todo check username
-            
+
             var item = _items.Where(i => i.Username == originalUsername).Select(i => i);
 
             // 不存在originalUsername的记录,则直接添加
@@ -139,7 +191,7 @@ namespace UEC
             {
                 return AddItem(username, token, scopes);
             }
-            
+
             var ci = configItems.First();
             ci.Username = username;
             ci.Token = token;
@@ -149,57 +201,51 @@ namespace UEC
             return true;
         }
 
+        public List<ConfigItem> GetItems()
+        {
+            return Items;
+        }
 
-//        [EventTag]
-//        public List<ConfigItem> GetItems()
-//        {
-//            return Items;
-//        }
-//
-//        [EventTag]
-//        public bool AddItem(ConfigItem item)
-//        {
-//            if (Items.Contains(item))
-//            {
-//                return false;
-//            }
-//
-//            Items.Add(item);
-//            IsDirty = true;
-//            return true;
-//        }
-//
-//        [EventTag]
-//        public bool RemoveItemByIndex(int index)
-//        {
-//            IsDirty = true;
-//            return Items.Count > index && RemoveItem(Items[index]);
-//        }
-//
-//        [EventTag]
-//        private bool RemoveItem(ConfigItem item)
-//        {
-//            if (!Items.Contains(item))
-//            {
-//                return false;
-//            }
-//
-//            Items.Remove(item);
-//            IsDirty = true;
-//            return true;
-//        }
-//
-//
-//        public void SetUsername(ConfigItem item, string username)
-//        {
-//            if (item == null)
-//            {
-//                Debug.LogError("item is null");
-//                return;
-//            }
-//
-//            item.Username = username;
-//        }
+        public bool AddItem(ConfigItem item)
+        {
+            if (Items.Contains(item))
+            {
+                return false;
+            }
+
+            Items.Add(item);
+            IsDirty = true;
+            return true;
+        }
+
+        public bool RemoveItemByIndex(int index)
+        {
+            IsDirty = true;
+            return Items.Count > index && RemoveItem(Items[index]);
+        }
+
+        private bool RemoveItem(ConfigItem item)
+        {
+            if (!Items.Contains(item))
+            {
+                return false;
+            }
+
+            Items.Remove(item);
+            IsDirty = true;
+            return true;
+        }
+
+        public void SetUsername(ConfigItem item, string username)
+        {
+            if (item == null)
+            {
+                Debug.LogError("item is null");
+                return;
+            }
+
+            item.Username = username;
+        }
 
         #region file operate
 
@@ -208,14 +254,12 @@ namespace UEC
             Write("");
         }
 
-        [EventTag]
         public void Revert()
         {
             LoadConfig();
             IsDirty = false;
         }
 
-        [EventTag]
         public void Apply()
         {
             SaveConfig();
