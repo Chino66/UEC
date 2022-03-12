@@ -7,10 +7,12 @@ namespace UEC
     public class OperateView : View<UECUI>
     {
         private VisualElementCache _cache;
-//        private Button _revertBtn;
-//        private Button _applyBtn;
 
-        private ItemDraftContext DraftContext => UI.DraftContext;
+        private Button revertBtn;
+        private Button applyBtn;
+
+        private UECContext context => UI.Context;
+        private ItemDraftContext currentSelectItemContext => context.CurrentSelectItemContext;
 
         protected override void OnInitialize(VisualElement parent)
         {
@@ -19,18 +21,18 @@ namespace UEC
             Add(temp);
             _cache = new VisualElementCache(temp);
 
-            var revertBtn = _cache.Get<Button>("revert_btn");
+            revertBtn = _cache.Get<Button>("revert_btn");
             revertBtn.clicked += () =>
             {
-                EventCenter.SendEvent("UECConfigModel", "Revert");
+                context.UECConfigModel.Revert();
                 UI.Refresh();
             };
 
-            var applyBtn = _cache.Get<Button>("apply_btn");
+            applyBtn = _cache.Get<Button>("apply_btn");
             applyBtn.clicked += () =>
             {
-                ApplyChange(DraftContext);
-                EventCenter.SendEvent("UECConfigModel", "Apply");
+                ApplyChange(currentSelectItemContext);
+                this.context.UECConfigModel.Apply();
                 UI.Refresh();
             };
 
@@ -46,31 +48,30 @@ namespace UEC
 
             if (context.IsNew)
             {
-                var draft = context.ConfigItemDraft;
-                var ret = (bool) EventCenter.SendEvent("UECConfigModel", "AddItem",
-                    draft.Username, draft.Token, draft.Scopes);
+                var draft = context.ConfigItem;
+                var ret = this.context.UECConfigModel.AddItem(draft);
                 if (ret)
                 {
-                    DraftContext.IsDirty = false;
+                    context.IsDirty = false;
                 }
             }
             else
             {
-                var draft = context.ConfigItemDraft;
-                var ret = (bool) EventCenter.SendEvent("UECConfigModel", "ModifyItem",
-                    draft.OriginalUsername, draft.Username, draft.Token, draft.Scopes);
+                var draft = context.ConfigItem;
+                var ret = this.context.UECConfigModel.ModifyItem(context.OriginalUsername, draft.Username, draft.Token, draft.Scopes);
                 if (ret)
                 {
-                    DraftContext.IsDirty = false;
+                    context.OriginalUsername = draft.Username;
+                    context.IsDirty = false;
                 }
             }
         }
 
         public void Refresh()
         {
-//            var isDirty = UI.UecConfig.IsDirty;
-//            _applyBtn.SetEnabled(isDirty);
-//            _revertBtn.SetEnabled(isDirty);
+            // var isDirty = context.UECConfigModel.IsDirty;
+            // applyBtn.SetEnabled(isDirty);
+            // revertBtn.SetEnabled(isDirty);
         }
     }
 }

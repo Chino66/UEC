@@ -2,12 +2,24 @@ using UEC.UIFramework;
 
 namespace UEC
 {
-    public class UECContext : Context
+    public class UECContext
     {
-        public UECConfigModel UecConfig;
+        public UECConfigModel UECConfigModel;
         public UPMConfigModel UPMConfigModel;
         public ManifestModel ManifestModel;
 
-        public ItemContext CurrentSelectItemContext;
+        public UECContext()
+        {
+            UECConfigModel = new UECConfigModel();
+            UPMConfigModel = new UPMConfigModel();
+            ManifestModel = new ManifestModel();
+        }
+        
+        public ItemDraftContext CurrentSelectItemContext { get; private set; }
+
+        public void SetItemDraftContext(ItemDraftContext itemContext)
+        {
+            CurrentSelectItemContext = itemContext;
+        }
     }
 }
