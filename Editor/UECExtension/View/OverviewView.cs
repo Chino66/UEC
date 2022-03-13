@@ -11,15 +11,6 @@ using UPMEnvironmentConfigure;
 
 namespace UEC
 {
-    public class ItemDraftContext
-    {
-        public VisualElement Element;
-        public ConfigItem ConfigItem;
-        public bool IsDirty;
-        public bool IsNew;
-        public string OriginalUsername;
-    }
-
     public class OverviewView : View<UECUI>
     {
         private const string Message =
@@ -37,15 +28,12 @@ namespace UEC
 
         private ItemDraftContext currentSelectItemContext
         {
-            get
-            {
-                return context.CurrentSelectItemContext;
-            }
+            get { return context.CurrentSelectItemContext; }
             set
             {
                 _removeBtn.SetEnabled(value != null);
                 context.SetItemDraftContext(value);
-                
+
                 if (value != null)
                 {
                     if (_currentSelectItemContext != null)
@@ -150,6 +138,7 @@ namespace UEC
             };
 
             DrawItem(context);
+            context.DrawItem();
             OnItemSelect(context);
         }
 
@@ -168,8 +157,8 @@ namespace UEC
             var ev = temp.ElementAt(index);
             _pool.Return(ev);
             temp.RemoveAt(index);
-            context.UECConfigModel.RemoveItem(config.Username);
-            // context.SetItemDraftContext(null);
+            
+            context.RemoveItem(config.Username);
             currentSelectItemContext = null;
             _removeBtn.SetEnabled(false);
             UI.GetView<DetailView>().Hide();
@@ -191,22 +180,23 @@ namespace UEC
                     OriginalUsername = item.Username
                 };
                 DrawItem(context);
+                context.DrawItem();
             }
         }
 
         private void DrawItem(ItemDraftContext draftContext)
         {
             var element = draftContext.Element;
-            var config = draftContext.ConfigItem;
+            // var config = draftContext.ConfigItem;
             _itemListRoot.Add(element);
-
-            var uLab = element.Q<Label>("username");
-            var tLab = element.Q<Label>("token");
-            var sLab = element.Q<Label>("scopes");
-
-            uLab.text = config.Username;
-            tLab.text = config.Token;
-            sLab.text = config.GetScopesOverview();
+            //
+            // var uLab = element.Q<Label>("username");
+            // var tLab = element.Q<Label>("token");
+            // var sLab = element.Q<Label>("scopes");
+            //
+            // uLab.text = config.Username;
+            // tLab.text = config.Token;
+            // sLab.text = config.GetScopesOverview();
 
             element.Q<Button>().clickable = new Clickable(() =>
             {
@@ -236,7 +226,7 @@ namespace UEC
         {
             _removeBtn.SetEnabled(true);
             draftContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0.25f));
-        
+
             UI.GetView<DetailView>().Refresh();
         }
 

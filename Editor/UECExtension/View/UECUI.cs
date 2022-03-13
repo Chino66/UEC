@@ -51,10 +51,5 @@ namespace UEC
             GetView<DetailView>().Refresh();
             GetView<OperateView>().Refresh();
         }
-
-        // public void SetDraftContext(ItemDraftContext context)
-        // {
-        //     DraftContext = context;
-        // }
     }
 }
