@@ -24,32 +24,34 @@ namespace UEC
             revertBtn = _cache.Get<Button>("revert_btn");
             revertBtn.clicked += () =>
             {
-                context.UECConfigModel.Revert();
+                context.Revert();
                 UI.Refresh();
             };
 
             applyBtn = _cache.Get<Button>("apply_btn");
             applyBtn.clicked += () =>
             {
-                ApplyChange(currentSelectItemContext);
-                this.context.UECConfigModel.Apply();
+                ApplyChange();
+                context.Apply();
                 UI.Refresh();
             };
 
             Refresh();
+
+            context.DirtyAction += Refresh;
         }
 
-        private void ApplyChange(ItemDraftContext context)
+        private void ApplyChange()
         {
-            if (context == null || context.IsDirty == false)
+            if (currentSelectItemContext == null || this.context.IsDirty == false)
             {
                 return;
             }
 
-            if (context.IsNew)
+            if (currentSelectItemContext.IsNew)
             {
-                var draft = context.ConfigItem;
-                var ret = this.context.UECConfigModel.AddItem(draft);
+                var configItem = currentSelectItemContext.ConfigItem;
+                var ret = context.UECConfigModel.AddItem(configItem);
                 if (ret)
                 {
                     context.IsDirty = false;
@@ -57,11 +59,11 @@ namespace UEC
             }
             else
             {
-                var draft = context.ConfigItem;
-                var ret = this.context.UECConfigModel.ModifyItem(context.OriginalUsername, draft.Username, draft.Token, draft.Scopes);
+                var configItem = currentSelectItemContext.ConfigItem;
+                var ret = this.context.UECConfigModel.ModifyItem(configItem.Username, configItem.Token,
+                    configItem.Scopes);
                 if (ret)
                 {
-                    context.OriginalUsername = draft.Username;
                     context.IsDirty = false;
                 }
             }
@@ -69,9 +71,9 @@ namespace UEC
 
         public void Refresh()
         {
-            // var isDirty = context.UECConfigModel.IsDirty;
-            // applyBtn.SetEnabled(isDirty);
-            // revertBtn.SetEnabled(isDirty);
+            var isDirty = context.IsDirty;
+            applyBtn.SetEnabled(isDirty);
+            revertBtn.SetEnabled(isDirty);
         }
     }
 }

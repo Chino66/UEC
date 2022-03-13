@@ -38,19 +38,7 @@ namespace UEC
 
             set
             {
-                if (value == null)
-                {
-                    _removeBtn.SetEnabled(false);
-                }
-
-                else if (value == _selectedScopeContext)
-                {
-                    _removeBtn.SetEnabled(false);
-                }
-                else
-                {
-                    _removeBtn.SetEnabled(true);
-                }
+                _removeBtn.SetEnabled(value != null);
 
                 _selectedScopeContext = value;
             }
@@ -81,8 +69,9 @@ namespace UEC
                     return;
                 }
 
-                currentSelectItemContext.ConfigItem.Username = evt.newValue;
-                currentSelectItemContext.IsDirty = true;
+                // currentSelectItemContext.ConfigItem.Username = evt.newValue;
+                currentSelectItemContext.SetUsername(evt.newValue);
+                context.IsDirty = true;
             });
             _tokenTf = _cache.Get<TextField>("token_tf");
             _tokenTf.RegisterValueChangedCallback(evt =>
@@ -92,8 +81,9 @@ namespace UEC
                     return;
                 }
 
-                currentSelectItemContext.ConfigItem.Token = evt.newValue;
-                currentSelectItemContext.IsDirty = true;
+                // currentSelectItemContext.ConfigItem.Token = evt.newValue;
+                currentSelectItemContext.SetToken(evt.newValue);
+                context.IsDirty = true;
             });
 
             _scopeListRoot = _cache.Get("scope_item_list_root");
@@ -139,10 +129,11 @@ namespace UEC
         {
             var scopeContext = new ScopeContext {Element = _pool.Get(), Scope = "*"};
             selectedScopeContext = scopeContext;
-            var rst = currentSelectItemContext.ConfigItem.AddScope(scopeContext.Scope);
+            var rst = currentSelectItemContext.AddScope(scopeContext.Scope);
             if (rst)
             {
                 DrawScope(scopeContext);
+                context.IsDirty = true;
             }
         }
 
@@ -159,10 +150,11 @@ namespace UEC
                 return;
             }
 
-            var rst = currentSelectItemContext.ConfigItem.RemoveScope(selectedScopeContext.Scope);
+            var rst = currentSelectItemContext.RemoveScope(selectedScopeContext.Scope);
             if (rst)
             {
                 RemoveScope(index);
+                context.IsDirty = true;
             }
 
             selectedScopeContext = null;
@@ -199,17 +191,21 @@ namespace UEC
             tf.RegisterCallback<ChangeEvent<string>, ScopeContext>((evt, ctx) =>
                 {
                     ctx.Scope = evt.newValue;
-                    var rst = currentSelectItemContext.ConfigItem.ModifyScope(evt.previousValue, evt.newValue);
+                    var rst = currentSelectItemContext.ModifyScope(evt.previousValue, evt.newValue);
                     if (rst)
                     {
-                        // todo 
+                        this.context.IsDirty = true;
                     }
 
 //                    UI.GetView<OverviewView>().ModifyScope(evt.previousValue, evt.newValue);
 //                    EventCenter.SendEvent("UECConfigModel", "ModifyScope", evt.previousValue, evt.newValue);
                 },
                 context);
-            element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) => { selectedScopeContext = ctx; }, context);
+            element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) =>
+            {
+                Debug.Log($"click:{ctx.Scope}");
+                selectedScopeContext = ctx;
+            }, context);
 
             var hasScopes = _scopeListRoot.childCount > 0;
             _noneTip.SetDisplay(!hasScopes);
