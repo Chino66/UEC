@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UEC.Event;
 using UEC.UIFramework;
 using UnityEngine.UIElements;
@@ -12,7 +13,8 @@ namespace UEC
         private Button applyBtn;
 
         private UECContext context => UI.Context;
-        private ItemDraftContext currentSelectItemContext => context.CurrentSelectItemContext;
+        private ItemDraftContext itemContext => context.ItemContext;
+        private Dictionary<string, ItemDraftContext> itemContexts => context.ItemContexts;
 
         protected override void OnInitialize(VisualElement parent)
         {
@@ -32,11 +34,7 @@ namespace UEC
             applyBtn = _cache.Get<Button>("apply_btn");
             applyBtn.clicked += () =>
             {
-                if (!ApplyChange())
-                {
-                    return;
-                }
-
+                ApplyChange();
                 context.Apply();
                 UI.Refresh();
             };
@@ -48,7 +46,7 @@ namespace UEC
 
         private void RevertChange()
         {
-            if (currentSelectItemContext == null || this.context.IsDirty == false)
+            if (context.IsDirty == false)
             {
                 return;
             }
@@ -62,39 +60,49 @@ namespace UEC
             {
                 return false;
             }
-            
-            if (currentSelectItemContext == null)
+
+
+            // if (UI.GetView<TipView>().SaveItemCheck() == false)
+            // {
+            //     return false;
+            // }
+            if (itemContext != null)
             {
-                return false;
+                context.SetItemUsername(itemContext.ConfigItem.Username);
             }
 
-            if (UI.GetView<TipView>().SaveItemCheck() == false)
+            foreach (var pair in itemContexts)
             {
-                return false;
-            }
-
-            context.SetCurrentItemConfigUsername(currentSelectItemContext.ConfigItem.Username);
-
-            if (currentSelectItemContext.IsNew)
-            {
-                var configItem = currentSelectItemContext.ConfigItem;
-                var ret = context.UECConfigModel.AddItem(configItem);
-                if (ret)
+                if (pair.Value.IsNew)
                 {
-                    context.IsDirty = false;
+                    var configItem = pair.Value.ConfigItem;
+                    var ret = context.UECConfigModel.AddItem(configItem);
+                    if (ret)
+                    {
+                        pair.Value.IsDirty = false;
+                    }
+                }
+                else if (pair.Value.IsRemove)
+                {
+                    var configItem = pair.Value.ConfigItem;
+                    var ret = context.UECConfigModel.RemoveItem(configItem.Username);
+                    if (ret)
+                    {
+                        pair.Value.IsDirty = false;
+                    }
+                }
+                else
+                {
+                    var ci = pair.Value.ConfigItem;
+                    var ret = context.UECConfigModel.ModifyItem(ci.Username, ci.Token, ci.Scopes);
+                    if (ret)
+                    {
+                        pair.Value.IsDirty = false;
+                    }
                 }
             }
-            else
-            {
-                var configItem = currentSelectItemContext.ConfigItem;
-                var ret = this.context.UECConfigModel.ModifyItem(configItem.Username, configItem.Token,
-                    configItem.Scopes);
-                if (ret)
-                {
-                    context.IsDirty = false;
-                }
-            }
 
+            context.IsDirty = false;
             return true;
         }
 
