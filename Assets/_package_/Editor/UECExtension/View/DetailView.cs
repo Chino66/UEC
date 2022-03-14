@@ -39,7 +39,6 @@ namespace UEC
             }
         }
 
-        private Button _addBtn;
         private Button _removeBtn;
 
         private UECContext context => UI.Context;
@@ -59,35 +58,61 @@ namespace UEC
             _nameTf = _cache.Get<TextField>("name_tf");
             _nameTf.RegisterValueChangedCallback(evt =>
             {
-                if (itemContext.ConfigItem.Username == evt.newValue)
+                if (context.GetUsername() == evt.newValue)
                 {
                     return;
                 }
 
-                itemContext.SetUsername(evt.newValue);
-                context.IsDirty = true;
-                
+                context.SetUsername(evt.newValue);
             });
+
             _tokenTf = _cache.Get<TextField>("token_tf");
             _tokenTf.RegisterValueChangedCallback(evt =>
             {
-                if (itemContext.ConfigItem.Token == evt.newValue)
+                if (context.GetToken() == evt.newValue)
                 {
                     return;
                 }
 
-                itemContext.SetToken(evt.newValue);
-                context.IsDirty = true;
+                context.SetToken(evt.newValue);
             });
 
             _scopeListRoot = _cache.Get("scope_item_list_root");
             _noneTip = _cache.Get("none_tip");
 
-            _addBtn = _cache.Get<Button>("add_item_btn");
-            _addBtn.clicked += AddScope;
+            var addBtn = _cache.Get<Button>("add_item_btn");
+            addBtn.clicked += () =>
+            {
+                ScopeContext = new ScopeContext {Element = _pool.Get(), Scope = "*"};
+                var rst = context.AddScope(ScopeContext.Scope);
+                if (rst)
+                {
+                    DrawScope(ScopeContext);
+                }
+            };
 
             _removeBtn = _cache.Get<Button>("remove_item_btn");
-            _removeBtn.clicked += RemoveSelectScope;
+            _removeBtn.clicked += () =>
+            {
+                if (ScopeContext == null)
+                {
+                    return;
+                }
+
+                var index = _scopeListRoot.IndexOf(ScopeContext.Element);
+                if (index < 0)
+                {
+                    return;
+                }
+
+                var rst = context.RemoveScope(ScopeContext.Scope);
+                if (rst)
+                {
+                    RemoveScope(index);
+                }
+
+                ScopeContext = null;
+            };
 
             ScopeContext = null;
             Hide();
@@ -117,43 +142,6 @@ namespace UEC
             Show();
         }
 
-
-        private void AddScope()
-        {
-            var scopeContext = new ScopeContext {Element = _pool.Get(), Scope = "*"};
-            ScopeContext = scopeContext;
-            var rst = itemContext.AddScope(scopeContext.Scope);
-            if (rst)
-            {
-                DrawScope(scopeContext);
-                context.IsDirty = true;
-            }
-        }
-
-        private void RemoveSelectScope()
-        {
-            if (ScopeContext == null)
-            {
-                return;
-            }
-
-            var index = _scopeListRoot.IndexOf(ScopeContext.Element);
-            if (index < 0)
-            {
-                return;
-            }
-
-            var rst = itemContext.RemoveScope(ScopeContext.Scope);
-            if (rst)
-            {
-                RemoveScope(index);
-                context.IsDirty = true;
-            }
-
-            ScopeContext = null;
-        }
-
-
         private void DrawScopeList(ItemDraftContext draftContext)
         {
             var config = draftContext.ConfigItem;
@@ -174,24 +162,21 @@ namespace UEC
             }
         }
 
-        private void DrawScope(ScopeContext context)
+        private void DrawScope(ScopeContext scopeContext)
         {
-            var element = context.Element;
+            var element = scopeContext.Element;
             var tf = element.Q<TextField>();
-            tf.value = context.Scope;
+            tf.value = scopeContext.Scope;
             _scopeListRoot.Add(element);
 
             tf.RegisterCallback<ChangeEvent<string>, ScopeContext>((evt, ctx) =>
                 {
                     ctx.Scope = evt.newValue;
-                    var rst = itemContext.ModifyScope(evt.previousValue, evt.newValue);
-                    if (rst)
-                    {
-                        this.context.IsDirty = true;
-                    }
+                    context.ModifyScope(evt.previousValue, evt.newValue);
                 },
-                context);
-            element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) => { ScopeContext = ctx; }, context);
+                scopeContext);
+
+            element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) => { ScopeContext = ctx; }, scopeContext);
 
             var hasScopes = _scopeListRoot.childCount > 0;
             _noneTip.SetDisplay(!hasScopes);

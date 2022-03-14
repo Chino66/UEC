@@ -91,9 +91,57 @@ namespace UEC
             }
         }
 
-        public void SetUsername()
+
+        public string GetUsername()
         {
-            
+            return ItemContext.ConfigItem.Username;
+        }
+
+        public void SetUsername(string username)
+        {
+            ItemContext.SetUsername(username);
+            IsDirty = true;
+        }
+
+        public string GetToken()
+        {
+            return ItemContext.ConfigItem.Token;
+        }
+
+        public void SetToken(string token)
+        {
+            ItemContext.SetToken(token);
+            IsDirty = true;
+        }
+
+        public bool AddScope(string scope)
+        {
+            var ret = ItemContext.AddScope(scope);
+            if (ret)
+            {
+                IsDirty = true;
+            }
+            return ret;
+        }
+
+        public bool RemoveScope(string scope)
+        {
+            var ret = ItemContext.RemoveScope(scope);
+            if (ret)
+            {
+                IsDirty = true;
+            }
+            return ret;
+        }
+
+        public bool ModifyScope(string old, string scope)
+        {
+            var ret = ItemContext.ModifyScope(old, scope);
+            if (ret)
+            {
+                IsDirty = true;
+            }
+            return ret;
         }
 
         public void Apply()
