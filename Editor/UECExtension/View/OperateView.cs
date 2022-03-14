@@ -34,9 +34,11 @@ namespace UEC
             applyBtn = _cache.Get<Button>("apply_btn");
             applyBtn.clicked += () =>
             {
-                ApplyChange();
-                context.Apply();
-                UI.Refresh();
+                if (ApplyChange())
+                {
+                    context.Apply();
+                    UI.Refresh();
+                }
             };
 
             Refresh();
@@ -61,11 +63,11 @@ namespace UEC
                 return false;
             }
 
+            if (UI.GetView<TipView>().SaveItemCheck() == false)
+            {
+                return false;
+            }
 
-            // if (UI.GetView<TipView>().SaveItemCheck() == false)
-            // {
-            //     return false;
-            // }
             if (itemContext != null)
             {
                 context.SetItemUsername(itemContext.ConfigItem.Username);

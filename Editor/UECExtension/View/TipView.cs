@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UEC.Event;
 using UEC.UIFramework;
@@ -14,6 +15,7 @@ namespace UEC
 
         private UECContext context => UI.Context;
         private ItemDraftContext currentSelectItemContext => context.ItemContext;
+        private Dictionary<string, ItemDraftContext> ItemContexts => context.ItemContexts;
 
         protected override void OnInitialize(VisualElement parent)
         {
@@ -69,37 +71,45 @@ namespace UEC
 
         public bool SaveItemCheck()
         {
-            var context = currentSelectItemContext;
-
-            if (!CheckValid(context.ConfigItem.Username))
-            {
-                Error($"Username {context.ConfigItem.Username} is invalid");
-                return false;
-            }
-
-            if (!CheckValid(context.ConfigItem.Token))
-            {
-                Error($"Token {context.ConfigItem.Token} is invalid");
-                return false;
-            }
-
-            foreach (var scope in context.ConfigItem.Scopes)
-            {
-                if (!CheckValid(scope))
-                {
-                    Error($"Scope {scope} is invalid");
-                    return false;
-                }
-            }
-
-            var sameAges = context.ConfigItem.Scopes.GroupBy(g => g).Where(s => s.Count() > 1).ToList();
+            var sameAges = ItemContexts.GroupBy(g => g.Value.ConfigItem.Username).Where(s => s.Count() > 1).ToList();
             if (sameAges.Count > 0)
             {
-                Error($"Scope is repeat");
+                Error($"Username {sameAges[0].Key} is repeat");
                 return false;
             }
 
             return true;
+            // var context = currentSelectItemContext;
+            //
+            // if (!CheckValid(context.ConfigItem.Username))
+            // {
+            //     Error($"Username {context.ConfigItem.Username} is invalid");
+            //     return false;
+            // }
+            //
+            // if (!CheckValid(context.ConfigItem.Token))
+            // {
+            //     Error($"Token {context.ConfigItem.Token} is invalid");
+            //     return false;
+            // }
+            //
+            // foreach (var scope in context.ConfigItem.Scopes)
+            // {
+            //     if (!CheckValid(scope))
+            //     {
+            //         Error($"Scope {scope} is invalid");
+            //         return false;
+            //     }
+            // }
+            //
+            // var sameAges = context.ConfigItem.Scopes.GroupBy(g => g).Where(s => s.Count() > 1).ToList();
+            // if (sameAges.Count > 0)
+            // {
+            //     Error($"Scope is repeat");
+            //     return false;
+            // }
+            //
+            // return true;
         }
 
         private bool CheckValid(string content)
