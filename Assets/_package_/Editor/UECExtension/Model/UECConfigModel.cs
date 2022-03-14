@@ -162,51 +162,37 @@ namespace UEC
             return true;
         }
 
-        // public bool ModifyItem(string originalUsername, string username, string token, List<string> scopes)
-        // {
-        //     // todo check username
-        //
-        //     var item = _items.Where(i => i.Username == originalUsername).Select(i => i);
-        //
-        //     // 不存在originalUsername的记录,则直接添加
-        //     var configItems = item as ConfigItem[] ?? item.ToArray();
-        //     if (!configItems.Any())
-        //     {
-        //         return AddItem(username, token, scopes);
-        //     }
-        //
-        //     var ci = configItems.First();
-        //     ci.Username = username;
-        //     ci.Token = token;
-        //     ci.Scopes = scopes;
-        //
-        //     IsDirty = true;
-        //     return true;
-        // }
-        
         public bool ModifyItem(string username, string token, List<string> scopes)
         {
-            var item = _items.Where(i => i.Username == username).Select(i => i);
+            var has = false;
+            foreach (var item in _items)
+            {
+                if (item.Username != username)
+                {
+                    continue;
+                }
 
-            // 不存在originalUsername的记录,则直接添加
-            var configItems = item as ConfigItem[] ?? item.ToArray();
-            if (!configItems.Any())
+                has = true;
+
+                item.Username = username;
+                item.Token = token;
+                item.Scopes = scopes;
+                break;
+            }
+
+            if (has)
+            {
+                IsDirty = true;
+                return true;
+            }
+            else
             {
                 return AddItem(username, token, scopes);
             }
-
-            var ci = configItems.First();
-            ci.Username = username;
-            ci.Token = token;
-            ci.Scopes = scopes;
-
-            IsDirty = true;
-            return true;
         }
 
         public List<ConfigItem> GetItems()
         {
-            // return Items;
             return _items;
         }
 
