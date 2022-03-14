@@ -13,7 +13,7 @@ namespace UEC
         private Label _tip;
 
         private UECContext context => UI.Context;
-        private ItemDraftContext currentSelectItemContext => context.CurrentSelectItemContext;
+        private ItemDraftContext currentSelectItemContext => context.ItemContext;
 
         protected override void OnInitialize(VisualElement parent)
         {

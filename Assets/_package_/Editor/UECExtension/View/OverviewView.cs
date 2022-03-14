@@ -24,37 +24,37 @@ namespace UEC
 
         private UECContext context => UI.Context;
 
-        private ItemDraftContext _currentSelectItemContext;
+        private ItemDraftContext _itemContext;
 
-        private Dictionary<string, ItemDraftContext> itemDraftContexts => context.ItemDraftContexts;
+        private Dictionary<string, ItemDraftContext> ItemContexts => context.ItemContexts;
 
-        private ItemDraftContext currentSelectItemContext
+        private ItemDraftContext ItemContext
         {
-            get { return context.CurrentSelectItemContext; }
-            set
-            {
-                _removeBtn.SetEnabled(value != null);
-                context.SetItemDraftContext(value);
-
-                if (value != null)
-                {
-                    if (_currentSelectItemContext != null)
-                    {
-                        UnselectStyle(_currentSelectItemContext);
-                    }
-
-                    context.SetCurrentItemConfigUsername(value.ConfigItem.Username);
-                    _currentSelectItemContext = value;
-                    _currentSelectItemContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0.25f));
-                }
-                else
-                {
-                    context.SetCurrentItemConfigUsername(null);
-                }
-
-
-                UI.GetView<DetailView>().Refresh();
-            }
+            get { return context.ItemContext; }
+            // set
+            // {
+            //     _removeBtn.SetEnabled(value != null);
+            //     context.SetItemDraftContext(value);
+            //
+            //     if (value != null)
+            //     {
+            //         if (_itemContext != null)
+            //         {
+            //             UnselectStyle(_itemContext);
+            //         }
+            //
+            //         context.SetItemUsername(value.ConfigItem.Username);
+            //         _itemContext = value;
+            //         _itemContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0.25f));
+            //     }
+            //     else
+            //     {
+            //         context.SetItemUsername(null);
+            //     }
+            //
+            //
+            //     UI.GetView<DetailView>().Refresh();
+            // }
         }
 
         private Button _removeBtn;
@@ -95,9 +95,54 @@ namespace UEC
             DrawItemList();
         }
 
+        private void ClearItemList()
+        {
+            var temp = _itemListRoot;
+            while (temp.childCount > 0)
+            {
+                var ev = temp.ElementAt(0);
+                _pool.Return(ev);
+                temp.RemoveAt(0);
+            }
+
+            ItemContexts.Clear();
+        }
+
+        private void DrawItemList()
+        {
+            var items = context.UECConfigModel.GetItems();
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                var element = _pool.Get();
+                var item = items[i];
+
+                var context = new ItemDraftContext
+                {
+                    Element = element,
+                    ConfigItem = item,
+                    IsNew = false,
+                    OriginalUsername = item.Username
+                };
+                InitItem(context);
+                context.RefreshItem();
+                ItemContexts.Add(context.ConfigItem.Username, context);
+            }
+
+            if (this.context.ItemUsername == null)
+            {
+                return;
+            }
+
+            if (ItemContexts.TryGetValue(this.context.ItemUsername, out var draftContext))
+            {
+                SetCurrentSelectItem(draftContext);
+            }
+        }
+
         private void AddItem()
         {
-            if (itemDraftContexts.ContainsKey("*"))
+            if (ItemContexts.ContainsKey("*"))
             {
                 UI.GetView<TipView>().Error("Already add new Item");
                 return;
@@ -117,91 +162,74 @@ namespace UEC
                 IsNew = true,
             };
 
-            itemDraftContexts.Add(context.ConfigItem.Username, context);
-            DrawItem(context);
-            context.DrawItem();
-            OnItemSelect(context);
+            InitItem(context);
+            context.RefreshItem();
+            this.context.AddItem(context);
+
+            SetCurrentSelectItem(context);
         }
 
         private void RemoveItem()
         {
-            if (currentSelectItemContext == null)
+            if (ItemContext == null)
             {
                 Debug.LogError("Remove fail no select item");
                 return;
             }
 
             var temp = _itemListRoot;
-            var element = currentSelectItemContext.Element;
-            var config = currentSelectItemContext.ConfigItem;
+            var element = ItemContext.Element;
+            var config = ItemContext.ConfigItem;
             var index = temp.IndexOf(element);
             var ev = temp.ElementAt(index);
             _pool.Return(ev);
             temp.RemoveAt(index);
 
             context.RemoveItem(config.Username);
-            currentSelectItemContext = null;
+
+            SetCurrentSelectItem(null);
             _removeBtn.SetEnabled(false);
             UI.GetView<DetailView>().Hide();
+
+            context.UpdateDirty();
         }
 
-        private void DrawItemList()
-        {
-            var items = context.UECConfigModel.GetItems();
-
-            for (var i = 0; i < items.Count; i++)
-            {
-                var element = _pool.Get();
-                var item = items[i];
-
-                var context = new ItemDraftContext
-                {
-                    Element = element,
-                    ConfigItem = item,
-                    IsNew = false,
-                    OriginalUsername = item.Username
-                };
-                DrawItem(context);
-                context.DrawItem();
-
-                itemDraftContexts.Add(context.ConfigItem.Username, context);
-            }
-
-            if (itemDraftContexts.TryGetValue(this.context.CurrentItemConfigUsername, out var draftContext))
-            {
-                // currentSelectItemContext = draftContext;
-                OnItemSelect(draftContext);
-            }
-        }
-
-        private void DrawItem(ItemDraftContext draftContext)
+        private void InitItem(ItemDraftContext draftContext)
         {
             var element = draftContext.Element;
             _itemListRoot.Add(element);
-            element.Q<Button>().clickable = new Clickable(() => { OnItemSelect(draftContext); });
+            element.Q<Button>().clickable = new Clickable(() => { SetCurrentSelectItem(draftContext); });
         }
 
-        private void OnItemSelect(ItemDraftContext draftContext)
+        private void SetCurrentSelectItem(ItemDraftContext value)
         {
-            currentSelectItemContext = draftContext;
+            // ItemContext = draftContext;
+            _removeBtn.SetEnabled(value != null);
+            context.SetItemDraftContext(value);
+
+            if (value != null)
+            {
+                if (_itemContext != null)
+                {
+                    UnselectStyle(_itemContext);
+                }
+
+                context.SetItemUsername(value.ConfigItem.Username);
+                _itemContext = value;
+                _itemContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0.25f));
+            }
+            else
+            {
+                context.SetItemUsername(null);
+            }
+
+
+            UI.GetView<DetailView>().Refresh();
         }
 
         private void UnselectStyle(ItemDraftContext draftContext)
         {
             draftContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0));
-        }
-
-        private void ClearItemList()
-        {
-            var temp = _itemListRoot;
-            while (temp.childCount > 0)
-            {
-                var ev = temp.ElementAt(0);
-                _pool.Return(ev);
-                temp.RemoveAt(0);
-            }
-
-            itemDraftContexts.Clear();
         }
     }
 }

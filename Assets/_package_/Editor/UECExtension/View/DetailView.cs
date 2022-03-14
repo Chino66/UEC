@@ -25,17 +25,17 @@ namespace UEC
         private VisualElement _scopeListRoot;
         private VisualElement _noneTip;
 
-        private ScopeContext _selectedScopeContext;
+        private ScopeContext _scopeContext;
 
-        private ScopeContext selectedScopeContext
+        private ScopeContext ScopeContext
         {
-            get { return _selectedScopeContext; }
+            get { return _scopeContext; }
 
             set
             {
                 _removeBtn.SetEnabled(value != null);
 
-                _selectedScopeContext = value;
+                _scopeContext = value;
             }
         }
 
@@ -43,7 +43,7 @@ namespace UEC
         private Button _removeBtn;
 
         private UECContext context => UI.Context;
-        private ItemDraftContext currentSelectItemContext => context.CurrentSelectItemContext;
+        private ItemDraftContext itemContext => context.ItemContext;
 
         protected override void OnInitialize(VisualElement parent)
         {
@@ -59,22 +59,24 @@ namespace UEC
             _nameTf = _cache.Get<TextField>("name_tf");
             _nameTf.RegisterValueChangedCallback(evt =>
             {
-                if (currentSelectItemContext.ConfigItem.Username == evt.newValue)
-                {
-                    return;
-                }
-                currentSelectItemContext.SetUsername(evt.newValue);
-                context.IsDirty = true;
-            });
-            _tokenTf = _cache.Get<TextField>("token_tf");
-            _tokenTf.RegisterValueChangedCallback(evt =>
-            {
-                if (currentSelectItemContext.ConfigItem.Token == evt.newValue)
+                if (itemContext.ConfigItem.Username == evt.newValue)
                 {
                     return;
                 }
 
-                currentSelectItemContext.SetToken(evt.newValue);
+                itemContext.SetUsername(evt.newValue);
+                context.IsDirty = true;
+                
+            });
+            _tokenTf = _cache.Get<TextField>("token_tf");
+            _tokenTf.RegisterValueChangedCallback(evt =>
+            {
+                if (itemContext.ConfigItem.Token == evt.newValue)
+                {
+                    return;
+                }
+
+                itemContext.SetToken(evt.newValue);
                 context.IsDirty = true;
             });
 
@@ -87,21 +89,20 @@ namespace UEC
             _removeBtn = _cache.Get<Button>("remove_item_btn");
             _removeBtn.clicked += RemoveSelectScope;
 
-            selectedScopeContext = null;
+            ScopeContext = null;
             Hide();
         }
 
 
         public void Refresh()
         {
-            ItemDraftContext draftContext = currentSelectItemContext;
-            if (draftContext == null)
+            if (itemContext == null)
             {
                 Hide();
                 return;
             }
 
-            ShowItemDetail(draftContext);
+            ShowItemDetail(itemContext);
         }
 
         private void ShowItemDetail(ItemDraftContext draftContext)
@@ -120,8 +121,8 @@ namespace UEC
         private void AddScope()
         {
             var scopeContext = new ScopeContext {Element = _pool.Get(), Scope = "*"};
-            selectedScopeContext = scopeContext;
-            var rst = currentSelectItemContext.AddScope(scopeContext.Scope);
+            ScopeContext = scopeContext;
+            var rst = itemContext.AddScope(scopeContext.Scope);
             if (rst)
             {
                 DrawScope(scopeContext);
@@ -131,25 +132,25 @@ namespace UEC
 
         private void RemoveSelectScope()
         {
-            if (selectedScopeContext == null)
+            if (ScopeContext == null)
             {
                 return;
             }
 
-            var index = _scopeListRoot.IndexOf(selectedScopeContext.Element);
+            var index = _scopeListRoot.IndexOf(ScopeContext.Element);
             if (index < 0)
             {
                 return;
             }
 
-            var rst = currentSelectItemContext.RemoveScope(selectedScopeContext.Scope);
+            var rst = itemContext.RemoveScope(ScopeContext.Scope);
             if (rst)
             {
                 RemoveScope(index);
                 context.IsDirty = true;
             }
 
-            selectedScopeContext = null;
+            ScopeContext = null;
         }
 
 
@@ -183,17 +184,14 @@ namespace UEC
             tf.RegisterCallback<ChangeEvent<string>, ScopeContext>((evt, ctx) =>
                 {
                     ctx.Scope = evt.newValue;
-                    var rst = currentSelectItemContext.ModifyScope(evt.previousValue, evt.newValue);
+                    var rst = itemContext.ModifyScope(evt.previousValue, evt.newValue);
                     if (rst)
                     {
                         this.context.IsDirty = true;
                     }
                 },
                 context);
-            element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) =>
-            {
-                selectedScopeContext = ctx;
-            }, context);
+            element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) => { ScopeContext = ctx; }, context);
 
             var hasScopes = _scopeListRoot.childCount > 0;
             _noneTip.SetDisplay(!hasScopes);

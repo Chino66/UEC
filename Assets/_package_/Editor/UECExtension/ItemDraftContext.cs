@@ -5,6 +5,14 @@ using UnityEngine.UIElements;
 
 namespace UEC
 {
+    // public enum ItemState
+    // {
+    //     Default,
+    //     Add,
+    //     Modify,
+    //     Delete
+    // }
+
     public class ItemDraftContext
     {
         public UECContext Context;
@@ -12,27 +20,29 @@ namespace UEC
         public ConfigItem ConfigItem;
         public bool IsDirty;
         public bool IsNew;
+        public bool IsRemove;
+        // public ItemState State = ItemState.Default;
         public string OriginalUsername;
 
         public void SetUsername(string username)
         {
             ConfigItem.Username = username;
             IsDirty = true;
-            DrawItem();
+            RefreshItem();
         }
 
         public void SetToken(string token)
         {
             ConfigItem.Token = token;
             IsDirty = true;
-            DrawItem();
+            RefreshItem();
         }
 
         public bool AddScope(string scope)
         {
             var ret = ConfigItem.AddScope(scope);
             IsDirty = true;
-            DrawItem();
+            RefreshItem();
             return ret;
         }
 
@@ -40,7 +50,7 @@ namespace UEC
         {
             var ret = ConfigItem.RemoveScope(scope);
             IsDirty = true;
-            DrawItem();
+            RefreshItem();
             return ret;
         }
 
@@ -48,11 +58,11 @@ namespace UEC
         {
             var ret = ConfigItem.ModifyScope(old, scope);
             IsDirty = true;
-            DrawItem();
+            RefreshItem();
             return ret;
         }
 
-        public void DrawItem()
+        public void RefreshItem()
         {
             var element = Element;
             var config = ConfigItem;
