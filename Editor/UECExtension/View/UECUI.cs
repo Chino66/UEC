@@ -21,7 +21,7 @@ namespace UEC
             ui.Initialize(parent);
             return ui;
         }
-        
+
         public UECContext Context;
 
         private UECUI()
@@ -43,6 +43,7 @@ namespace UEC
             AddView<OverviewView>();
             AddView<DetailView>();
             AddView<OperateView>();
+            AddView<TipView>();
         }
 
         public void Refresh()
@@ -50,6 +51,7 @@ namespace UEC
             GetView<OverviewView>().Refresh();
             GetView<DetailView>().Refresh();
             GetView<OperateView>().Refresh();
+            GetView<TipView>().Refresh();
         }
     }
 }

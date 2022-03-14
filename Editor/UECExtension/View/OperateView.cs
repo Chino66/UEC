@@ -24,6 +24,7 @@ namespace UEC
             revertBtn = _cache.Get<Button>("revert_btn");
             revertBtn.clicked += () =>
             {
+                RevertChange();
                 context.Revert();
                 UI.Refresh();
             };
@@ -31,7 +32,11 @@ namespace UEC
             applyBtn = _cache.Get<Button>("apply_btn");
             applyBtn.clicked += () =>
             {
-                ApplyChange();
+                if (!ApplyChange())
+                {
+                    return;
+                }
+
                 context.Apply();
                 UI.Refresh();
             };
@@ -41,12 +46,34 @@ namespace UEC
             context.DirtyAction += Refresh;
         }
 
-        private void ApplyChange()
+        private void RevertChange()
         {
             if (currentSelectItemContext == null || this.context.IsDirty == false)
             {
                 return;
             }
+
+            context.SetItemDraftContext(null);
+        }
+
+        private bool ApplyChange()
+        {
+            if (context.IsDirty == false)
+            {
+                return false;
+            }
+            
+            if (currentSelectItemContext == null)
+            {
+                return false;
+            }
+
+            if (UI.GetView<TipView>().SaveItemCheck() == false)
+            {
+                return false;
+            }
+
+            context.SetCurrentItemConfigUsername(currentSelectItemContext.ConfigItem.Username);
 
             if (currentSelectItemContext.IsNew)
             {
@@ -67,6 +94,8 @@ namespace UEC
                     context.IsDirty = false;
                 }
             }
+
+            return true;
         }
 
         public void Refresh()

@@ -26,6 +26,8 @@ namespace UEC
 
         private ItemDraftContext _currentSelectItemContext;
 
+        private Dictionary<string, ItemDraftContext> itemDraftContexts => context.ItemDraftContexts;
+
         private ItemDraftContext currentSelectItemContext
         {
             get { return context.CurrentSelectItemContext; }
@@ -38,13 +40,20 @@ namespace UEC
                 {
                     if (_currentSelectItemContext != null)
                     {
-                        OnItemUnSelect(_currentSelectItemContext);
+                        UnselectStyle(_currentSelectItemContext);
                     }
 
+                    context.SetCurrentItemConfigUsername(value.ConfigItem.Username);
                     _currentSelectItemContext = value;
                     _currentSelectItemContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0.25f));
-                    UI.GetView<DetailView>().Refresh();
                 }
+                else
+                {
+                    context.SetCurrentItemConfigUsername(null);
+                }
+
+
+                UI.GetView<DetailView>().Refresh();
             }
         }
 
@@ -84,44 +93,15 @@ namespace UEC
 
             ClearItemList();
             DrawItemList();
-
-            if (currentSelectItemContext != null)
-            {
-                SetItemSelect(currentSelectItemContext);
-            }
         }
-
-        // private bool DraftChangeTip()
-        // {
-        //     if (DraftContext == null)
-        //     {
-        //         return false;
-        //     }
-        //
-        //     if (DraftContext.IsDirty == false)
-        //     {
-        //         return false;
-        //     }
-        //
-        //     if (EditorUtility.DisplayDialog("Discard unsaved changes", Message, "Continue", "Cancel"))
-        //     {
-        //         // 继续编辑
-        //         return true;
-        //     }
-        //     else
-        //     {
-        //         // 取消编辑,还原修改
-        //         DraftContext.Revert();
-        //         return false;
-        //     }
-        // }
 
         private void AddItem()
         {
-            // if (DraftChangeTip())
-            // {
-            //     return;
-            // }
+            if (itemDraftContexts.ContainsKey("*"))
+            {
+                UI.GetView<TipView>().Error("Already add new Item");
+                return;
+            }
 
             var element = _pool.Get();
 
@@ -137,6 +117,7 @@ namespace UEC
                 IsNew = true,
             };
 
+            itemDraftContexts.Add(context.ConfigItem.Username, context);
             DrawItem(context);
             context.DrawItem();
             OnItemSelect(context);
@@ -157,7 +138,7 @@ namespace UEC
             var ev = temp.ElementAt(index);
             _pool.Return(ev);
             temp.RemoveAt(index);
-            
+
             context.RemoveItem(config.Username);
             currentSelectItemContext = null;
             _removeBtn.SetEnabled(false);
@@ -167,7 +148,8 @@ namespace UEC
         private void DrawItemList()
         {
             var items = context.UECConfigModel.GetItems();
-            for (int i = 0; i < items.Count; i++)
+
+            for (var i = 0; i < items.Count; i++)
             {
                 var element = _pool.Get();
                 var item = items[i];
@@ -181,56 +163,30 @@ namespace UEC
                 };
                 DrawItem(context);
                 context.DrawItem();
+
+                itemDraftContexts.Add(context.ConfigItem.Username, context);
+            }
+
+            if (itemDraftContexts.TryGetValue(this.context.CurrentItemConfigUsername, out var draftContext))
+            {
+                // currentSelectItemContext = draftContext;
+                OnItemSelect(draftContext);
             }
         }
 
         private void DrawItem(ItemDraftContext draftContext)
         {
             var element = draftContext.Element;
-            // var config = draftContext.ConfigItem;
             _itemListRoot.Add(element);
-            //
-            // var uLab = element.Q<Label>("username");
-            // var tLab = element.Q<Label>("token");
-            // var sLab = element.Q<Label>("scopes");
-            //
-            // uLab.text = config.Username;
-            // tLab.text = config.Token;
-            // sLab.text = config.GetScopesOverview();
-
-            element.Q<Button>().clickable = new Clickable(() =>
-            {
-                OnItemSelect(draftContext);
-                Debug.Log("click");
-            });
+            element.Q<Button>().clickable = new Clickable(() => { OnItemSelect(draftContext); });
         }
 
         private void OnItemSelect(ItemDraftContext draftContext)
         {
-            // if (DraftChangeTip())
-            // {
-            //     return;
-            // }
-
-            // if (currentSelectItemContext != null)
-            // {
-            //     OnItemUnSelect(currentSelectItemContext);
-            // }
-
-            // context.SetItemDraftContext(draftContext);
             currentSelectItemContext = draftContext;
-            // SetItemSelect(currentSelectItemContext);
         }
 
-        private void SetItemSelect(ItemDraftContext draftContext)
-        {
-            _removeBtn.SetEnabled(true);
-            draftContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0.25f));
-
-            UI.GetView<DetailView>().Refresh();
-        }
-
-        private void OnItemUnSelect(ItemDraftContext draftContext)
+        private void UnselectStyle(ItemDraftContext draftContext)
         {
             draftContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0));
         }
@@ -244,6 +200,8 @@ namespace UEC
                 _pool.Return(ev);
                 temp.RemoveAt(0);
             }
+
+            itemDraftContexts.Clear();
         }
     }
 }

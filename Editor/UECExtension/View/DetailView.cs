@@ -10,13 +10,8 @@ namespace UEC
 {
     public class ScopeContext
     {
-        /// <summary>
-        /// 对应列表索引值
-        /// </summary>
-        public int index;
-
-        public string Scope;
         public VisualElement Element;
+        public string Scope;
     }
 
     public class DetailView : View<UECUI>
@@ -68,8 +63,6 @@ namespace UEC
                 {
                     return;
                 }
-
-                // currentSelectItemContext.ConfigItem.Username = evt.newValue;
                 currentSelectItemContext.SetUsername(evt.newValue);
                 context.IsDirty = true;
             });
@@ -81,7 +74,6 @@ namespace UEC
                     return;
                 }
 
-                // currentSelectItemContext.ConfigItem.Token = evt.newValue;
                 currentSelectItemContext.SetToken(evt.newValue);
                 context.IsDirty = true;
             });
@@ -196,14 +188,10 @@ namespace UEC
                     {
                         this.context.IsDirty = true;
                     }
-
-//                    UI.GetView<OverviewView>().ModifyScope(evt.previousValue, evt.newValue);
-//                    EventCenter.SendEvent("UECConfigModel", "ModifyScope", evt.previousValue, evt.newValue);
                 },
                 context);
             element.RegisterCallback<ClickEvent, ScopeContext>((evt, ctx) =>
             {
-                Debug.Log($"click:{ctx.Scope}");
                 selectedScopeContext = ctx;
             }, context);
 
