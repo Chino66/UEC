@@ -31,30 +31,6 @@ namespace UEC
         private ItemDraftContext ItemContext
         {
             get { return context.ItemContext; }
-            // set
-            // {
-            //     _removeBtn.SetEnabled(value != null);
-            //     context.SetItemDraftContext(value);
-            //
-            //     if (value != null)
-            //     {
-            //         if (_itemContext != null)
-            //         {
-            //             UnselectStyle(_itemContext);
-            //         }
-            //
-            //         context.SetItemUsername(value.ConfigItem.Username);
-            //         _itemContext = value;
-            //         _itemContext.Element.style.backgroundColor = new StyleColor(new Color(0, 0, 0, 0.25f));
-            //     }
-            //     else
-            //     {
-            //         context.SetItemUsername(null);
-            //     }
-            //
-            //
-            //     UI.GetView<DetailView>().Refresh();
-            // }
         }
 
         private Button _removeBtn;
@@ -82,6 +58,10 @@ namespace UEC
             _removeBtn = _cache.Get<Button>("remove_item_btn");
             _removeBtn.clicked += RemoveItem;
             _removeBtn.SetEnabled(false);
+
+            var viewConfig = _cache.Get<Button>("view_config");
+            viewConfig.clicked += () => { EditorUtility.RevealInFinder(UECConfigModel.UECConfigPath); };
+
             Refresh();
         }
 
@@ -114,8 +94,14 @@ namespace UEC
 
             for (var i = 0; i < items.Count; i++)
             {
-                var element = _pool.Get();
                 var item = items[i];
+                if (ItemContexts.ContainsKey(item.Username))
+                {
+                    Debug.LogError($"Item Username {item.Username} already exist.");
+                    continue;
+                }
+
+                var element = _pool.Get();
 
                 var context = new ItemDraftContext
                 {

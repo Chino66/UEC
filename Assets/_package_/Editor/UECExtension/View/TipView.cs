@@ -78,44 +78,21 @@ namespace UEC
                 return false;
             }
 
-            return true;
-            // var context = currentSelectItemContext;
-            //
-            // if (!CheckValid(context.ConfigItem.Username))
-            // {
-            //     Error($"Username {context.ConfigItem.Username} is invalid");
-            //     return false;
-            // }
-            //
-            // if (!CheckValid(context.ConfigItem.Token))
-            // {
-            //     Error($"Token {context.ConfigItem.Token} is invalid");
-            //     return false;
-            // }
-            //
-            // foreach (var scope in context.ConfigItem.Scopes)
-            // {
-            //     if (!CheckValid(scope))
-            //     {
-            //         Error($"Scope {scope} is invalid");
-            //         return false;
-            //     }
-            // }
-            //
-            // var sameAges = context.ConfigItem.Scopes.GroupBy(g => g).Where(s => s.Count() > 1).ToList();
-            // if (sameAges.Count > 0)
-            // {
-            //     Error($"Scope is repeat");
-            //     return false;
-            // }
-            //
-            // return true;
-        }
-
-        private bool CheckValid(string content)
-        {
-            if (string.IsNullOrEmpty(content))
+            if (ItemContexts.Any(pair => string.IsNullOrEmpty(pair.Value.ConfigItem.Username)))
             {
+                Error($"Username can not be empty!");
+                return false;
+            }
+
+            if (ItemContexts.Any(pair => string.IsNullOrEmpty(pair.Value.ConfigItem.Token)))
+            {
+                Error($"Token can not be empty!");
+                return false;
+            }
+
+            if (ItemContexts.Any(pair => pair.Value.ConfigItem.Scopes.Any(scope => string.IsNullOrEmpty(scope))))
+            {
+                Error($"Scope can not be empty!");
                 return false;
             }
 

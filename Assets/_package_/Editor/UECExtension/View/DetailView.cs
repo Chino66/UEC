@@ -114,6 +114,18 @@ namespace UEC
                 ScopeContext = null;
             };
 
+            var usernameTip = _cache.Get<Button>("username_tip");
+            usernameTip.tooltip = "Your or other's Github account name";
+
+            var tokenTip = _cache.Get<Button>("token_tip");
+            tokenTip.tooltip = "Credentials obtained from github, click the button for details";
+            tokenTip.clicked += () =>
+            {
+                const string url =
+                    "https://docs.github.com/cn/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token";
+                Application.OpenURL(url);
+            };
+
             ScopeContext = null;
             Hide();
         }
