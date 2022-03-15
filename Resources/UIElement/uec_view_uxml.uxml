@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/_package_/Resources/UIElement/uss.uss?fileID=7433441132597879392&amp;guid=9fc04e33986da5b488843efbb9aadc2a&amp;type=3#uss" />
+    <Style src="uss.uss" />
     <ui:VisualElement class="root" style="background-color: rgba(255, 255, 255, 0);">
         <ui:ScrollView>
             <ui:VisualElement name="list_view_root">
@@ -8,7 +8,7 @@
                 </ui:Box>
                 <ui:Box name="title" class="row" style="background-color: rgba(182, 182, 182, 0);">
                     <ui:Label text="Github" style="-unity-font-style: bold; width: auto;" />
-                    <ui:Button text="view config" display-tooltip-when-elided="true" name="view_config" style="flex-shrink: 1; flex-grow: 0; width: 20%; background-color: rgba(88, 88, 88, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; color: rgba(0, 142, 255, 255);" />
+                    <ui:Button text="view config" display-tooltip-when-elided="true" name="view_config" style="flex-shrink: 1; flex-grow: 0; width: 20%; background-color: rgba(88, 88, 88, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; color: rgb(0, 142, 255);" />
                 </ui:Box>
                 <ui:Box name="list_box" style="border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(255, 255, 255, 0);">
                     <ui:Box class="row" style="border-top-left-radius: 3px; border-bottom-left-radius: 0; border-top-right-radius: 3px; border-bottom-right-radius: 0; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128);">
@@ -57,14 +57,14 @@
                 </ui:Box>
             </ui:VisualElement>
             <ui:Box name="operate_view_root" class="row" style="border-left-color: rgba(128, 128, 128, 0.5); border-right-color: rgba(128, 128, 128, 0.5); border-top-color: rgba(128, 128, 128, 0.5); border-bottom-color: rgba(128, 128, 128, 0.5); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; display: flex;">
-                <ui:Button name="revert_btn" text="revert" style="margin-left: 2px; margin-right: 0; margin-top: 2px; margin-bottom: 2px; height: 20px; border-left-width: 0; border-right-width: 1px; border-top-width: 0; border-bottom-width: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
-                <ui:Button name="apply_btn" text="apply" style="margin-left: 0; margin-right: 2px; margin-top: 2px; margin-bottom: 2px; height: 20px; border-left-width: 0; border-right-width: 1px; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0;" />
+                <ui:Button name="revert_btn" text="Revert" style="margin-left: 2px; margin-right: 0; margin-top: 2px; margin-bottom: 2px; height: 20px; border-left-width: 0; border-right-width: 1px; border-top-width: 0; border-bottom-width: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
+                <ui:Button name="apply_btn" text="Apply" style="margin-left: 0; margin-right: 2px; margin-top: 2px; margin-bottom: 2px; height: 20px; border-left-width: 0; border-right-width: 1px; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0;" />
             </ui:Box>
             <ui:VisualElement name="tip_view_root">
                 <ui:Label text="tip" display-tooltip-when-elided="true" name="tip" />
             </ui:VisualElement>
-            <ui:Box name="create_box" class="row" style="border-left-color: rgba(128, 128, 128, 0.5); border-right-color: rgba(128, 128, 128, 0.5); border-top-color: rgba(128, 128, 128, 0.5); border-bottom-color: rgba(128, 128, 128, 0.5); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; display: none;">
-                <ui:Button name="create_btn" text="create" style="margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px; height: 20px;" />
+            <ui:Box name="update_view_root" class="row" style="border-left-color: rgba(128, 128, 128, 0.5); border-right-color: rgba(128, 128, 128, 0.5); border-top-color: rgba(128, 128, 128, 0.5); border-bottom-color: rgba(128, 128, 128, 0.5); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; display: flex;">
+                <ui:Button name="update_btn" text="Update" style="margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px; height: 20px;" />
             </ui:Box>
         </ui:ScrollView>
     </ui:VisualElement>

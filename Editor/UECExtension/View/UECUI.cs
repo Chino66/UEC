@@ -44,6 +44,7 @@ namespace UEC
             AddView<DetailView>();
             AddView<OperateView>();
             AddView<TipView>();
+            AddView<UpdateView>();
         }
 
         public void Refresh()
