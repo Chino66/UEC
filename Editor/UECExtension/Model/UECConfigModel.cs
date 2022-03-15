@@ -82,7 +82,7 @@ namespace UEC
 
         public static string UECConfigPath => Path.Combine(UserProfilePath(), UECConfigFile);
 
-        private static string UserProfilePath()
+        public static string UserProfilePath()
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         }
