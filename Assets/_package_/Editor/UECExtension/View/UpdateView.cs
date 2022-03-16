@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UEC.Event;
 using UEC.UIFramework;
+using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,10 +12,8 @@ namespace UEC
     public class UpdateView : View<UECUI>
     {
         private VisualElementCache _cache;
-
-        // private UECContext context => UI.Context;
-        // private ItemDraftContext currentSelectItemContext => context.ItemContext;
-        // private Dictionary<string, ItemDraftContext> ItemContexts => context.ItemContexts;
+        private UECContext context => UI.Context;
+        private Button updateBtn;
 
         protected override void OnInitialize(VisualElement parent)
         {
@@ -22,8 +22,35 @@ namespace UEC
             Add(temp);
             _cache = new VisualElementCache(temp);
 
-            var btn = _cache.Get<Button>("update_btn");
-            btn.clicked += () => { UI.Context.ManifestModel.Test(); };
+            updateBtn = _cache.Get<Button>("update_btn");
+            updateBtn.clicked += () =>
+            {
+                context.ManifestModel.Update();
+                context.UPMConfigModel.Update();
+                context.NpmrcModel.Update();
+            };
+            Refresh();
+            context.DirtyAction += Refresh;
+
+            var view = _cache.Get<Button>("view_manifest");
+            view.clicked += () => { EditorUtility.RevealInFinder(ManifestModel.ManifestPath); };
+
+            view = _cache.Get<Button>("view_upmconfig");
+            view.clicked += () => { EditorUtility.RevealInFinder(UPMConfigModel.UPMConfigPath); };
+
+            view = _cache.Get<Button>("view_npmrc");
+            view.clicked += () => { EditorUtility.RevealInFinder(NpmrcModel.NpmrcPath); };
+
+            // var btn = new Button();
+            // updateBtn.parent.Add(btn);
+            // btn.text = "upmconfig";
+            // btn.clicked += () => { context.UPMConfigModel.Update(); };
+        }
+
+        public void Refresh()
+        {
+            var isDirty = context.IsDirty;
+            updateBtn.SetEnabled(!isDirty);
         }
     }
 }

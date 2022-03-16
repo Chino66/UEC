@@ -45,6 +45,7 @@ namespace UEC
             AddView<OperateView>();
             AddView<TipView>();
             AddView<UpdateView>();
+            AddView<InstallView>();
         }
 
         public void Refresh()
@@ -53,6 +54,8 @@ namespace UEC
             GetView<DetailView>().Refresh();
             GetView<OperateView>().Refresh();
             GetView<TipView>().Refresh();
+            GetView<UpdateView>().Refresh();
+            GetView<InstallView>().Refresh();
         }
     }
 }

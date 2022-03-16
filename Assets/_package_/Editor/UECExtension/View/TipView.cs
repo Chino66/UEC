@@ -84,11 +84,11 @@ namespace UEC
                 return false;
             }
 
-            if (ItemContexts.Any(pair => string.IsNullOrEmpty(pair.Value.ConfigItem.Token)))
-            {
-                Error($"Token can not be empty!");
-                return false;
-            }
+            // if (ItemContexts.Any(pair => string.IsNullOrEmpty(pair.Value.ConfigItem.Token)))
+            // {
+            //     Error($"Token can not be empty!");
+            //     return false;
+            // }
 
             if (ItemContexts.Any(pair => pair.Value.ConfigItem.Scopes.Any(scope => string.IsNullOrEmpty(scope))))
             {

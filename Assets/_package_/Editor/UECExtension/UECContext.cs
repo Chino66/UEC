@@ -9,6 +9,7 @@ namespace UEC
         public UECConfigModel UECConfigModel;
         public UPMConfigModel UPMConfigModel;
         public ManifestModel ManifestModel;
+        public NpmrcModel NpmrcModel;
 
         public Dictionary<string /*username*/, ItemDraftContext> ItemContexts;
 
@@ -29,9 +30,9 @@ namespace UEC
         public UECContext()
         {
             UECConfigModel = new UECConfigModel();
-            UPMConfigModel = new UPMConfigModel();
-            ManifestModel = new ManifestModel();
-
+            UPMConfigModel = new UPMConfigModel(this);
+            ManifestModel = new ManifestModel(this);
+            NpmrcModel = new NpmrcModel(this);
             ItemContexts = new Dictionary<string, ItemDraftContext>();
         }
 
@@ -121,6 +122,7 @@ namespace UEC
             {
                 IsDirty = true;
             }
+
             return ret;
         }
 
@@ -131,6 +133,7 @@ namespace UEC
             {
                 IsDirty = true;
             }
+
             return ret;
         }
 
@@ -141,6 +144,7 @@ namespace UEC
             {
                 IsDirty = true;
             }
+
             return ret;
         }
 
