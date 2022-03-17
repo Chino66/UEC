@@ -13,8 +13,8 @@
                 <ui:Box name="list_box" style="border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(255, 255, 255, 0);">
                     <ui:Box class="row" style="border-top-left-radius: 3px; border-bottom-left-radius: 0; border-top-right-radius: 3px; border-bottom-right-radius: 0; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128);">
                         <ui:Label name="username" text="Username" style="width: 20%;" />
-                        <ui:Label name="scopes" text="Scopes" style="width: 50%;" />
-                        <ui:Label name="token" text="Token" style="width: 20%;" />
+                        <ui:Label name="scopes" text="Scopes" style="width: 70%;" />
+                        <ui:Label name="token" text="Token" style="width: 20%; display: none;" />
                     </ui:Box>
                     <ui:Box name="none_tip" class="row" style="border-left-width: 1px; border-right-width: 1px; border-top-width: 0; border-bottom-width: 1px; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 3px; border-left-color: rgba(128, 128, 128, 0.5); border-right-color: rgba(128, 128, 128, 0.5); border-top-color: rgba(128, 128, 128, 0.5); border-bottom-color: rgba(128, 128, 128, 0.5); background-color: rgba(128, 128, 128, 0); display: flex; height: 30px;">
                         <ui:Label name="dependencies_listempty" text="List is Empty" style="background-color: rgba(0, 0, 0, 0); display: flex; height: auto;" />
@@ -38,9 +38,15 @@
                             <ui:Button text="?" display-tooltip-when-elided="true" name="username_tip" style="width: 0; flex-shrink: 1; flex-grow: 0;" />
                         </ui:Box>
                         <ui:Box class="row" style="flex-grow: 1; border-left-width: 1px; border-right-width: 1px; border-top-width: 0; border-bottom-width: 1px; border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128);">
-                            <ui:Label text="Token       " display-tooltip-when-elided="True" style="width: auto; flex-shrink: 1; flex-grow: 0;" />
-                            <ui:TextField name="token_tf" text="ghp_27xxxxxxxxxxxxxxCEQ" style="width: 30%; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; flex-shrink: 1; flex-grow: 1;" />
-                            <ui:Button text="?" display-tooltip-when-elided="true" name="token_tip" style="flex-shrink: 1; flex-grow: 0;" />
+                            <ui:Box name="develop_box" class="row" style="flex-grow: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128); width: auto; background-color: rgba(140, 140, 140, 0);">
+                                <ui:Label text="Developer" display-tooltip-when-elided="True" style="width: auto; flex-shrink: 1; flex-grow: 0; margin-left: 7px; margin-right: 7px; margin-top: 7px; margin-bottom: 7px;" />
+                                <ui:Toggle name="develop_toggle" />
+                            </ui:Box>
+                            <ui:Box name="token_box" class="row" style="flex-grow: 1; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128); width: auto; min-width: auto; min-height: auto; flex-direction: row; background-color: rgba(140, 140, 140, 0); display: flex;">
+                                <ui:Label text="Token       " display-tooltip-when-elided="True" style="width: auto; flex-shrink: 1; flex-grow: 0;" />
+                                <ui:TextField name="token_tf" text="ghp_27xxxxxxxxxxxxxxCEQ" style="width: 30%; margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px; flex-shrink: 1; flex-grow: 1;" />
+                                <ui:Button text="?" display-tooltip-when-elided="true" name="token_tip" style="flex-shrink: 1; flex-grow: 0;" />
+                            </ui:Box>
                         </ui:Box>
                     </ui:VisualElement>
                     <ui:Box class="row" style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-left-width: 1px; border-right-width: 1px; border-top-width: 0; border-bottom-width: 0; border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128);">

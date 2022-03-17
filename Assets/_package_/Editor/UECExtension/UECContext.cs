@@ -114,6 +114,17 @@ namespace UEC
             ItemContext.SetToken(token);
             IsDirty = true;
         }
+        
+        public bool GetIsDeveloper()
+        {
+            return ItemContext.GetIsDeveloper();
+        }
+        
+        public void SetIsDeveloper(bool value)
+        {
+            ItemContext.SetIsDeveloper(value);
+            IsDirty = true;
+        }
 
         public bool AddScope(string scope)
         {

@@ -142,7 +142,7 @@ namespace UEC
                 ConfigItem = new ConfigItem()
                 {
                     Username = "*",
-                    Token = "*",
+                    Token = "",
                     Scopes = new List<string>()
                 },
                 IsNew = true,

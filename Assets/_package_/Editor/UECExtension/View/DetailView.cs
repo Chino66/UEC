@@ -27,6 +27,12 @@ namespace UEC
 
         private ScopeContext _scopeContext;
 
+        private Button _removeBtn;
+
+        private VisualElement _tokenBox;
+
+        private Toggle _toggle;
+
         private ScopeContext ScopeContext
         {
             get { return _scopeContext; }
@@ -38,8 +44,6 @@ namespace UEC
                 _scopeContext = value;
             }
         }
-
-        private Button _removeBtn;
 
         private UECContext context => UI.Context;
         private ItemDraftContext itemContext => context.ItemContext;
@@ -75,6 +79,20 @@ namespace UEC
                 }
 
                 context.SetToken(evt.newValue);
+            });
+
+            _tokenBox = _cache.Get<VisualElement>("token_box");
+            _tokenBox.SetDisplay(false);
+
+            _toggle = _cache.Get<Toggle>("develop_toggle");
+            _toggle.RegisterValueChangedCallback(evt =>
+            {
+                if (context.GetIsDeveloper() != evt.newValue)
+                {
+                    context.SetIsDeveloper(evt.newValue);
+                }
+
+                _tokenBox.SetDisplay(evt.newValue);
             });
 
             _scopeListRoot = _cache.Get("scope_item_list_root");
@@ -147,6 +165,7 @@ namespace UEC
             var config = draftContext.ConfigItem;
             _nameTf.value = config.Username;
             _tokenTf.value = config.Token;
+            _toggle.value = config.IsDeveloper;
 
             ClearScopeList();
             DrawScopeList(draftContext);
