@@ -48,6 +48,8 @@ namespace UEC
                 Client.Add("com.chino.object.pool@0.0.2");
             };
             ibtn.parent.Add(btn);
+
+            Self.SetDisplay(false);
         }
 
         public void Refresh()

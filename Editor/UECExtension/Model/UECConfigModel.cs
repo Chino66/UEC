@@ -12,6 +12,7 @@ namespace UEC
     public class ConfigItem
     {
         public string Username;
+        public bool IsDeveloper;
         public string Token;
         public List<string> Scopes = new List<string>();
 

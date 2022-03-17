@@ -20,7 +20,9 @@ namespace UEC
         public ConfigItem ConfigItem;
         public bool IsDirty;
         public bool IsNew;
+
         public bool IsRemove;
+
         // public ItemState State = ItemState.Default;
         public string OriginalUsername;
 
@@ -34,6 +36,19 @@ namespace UEC
         public void SetToken(string token)
         {
             ConfigItem.Token = token;
+            IsDirty = true;
+            RefreshItem();
+        }
+
+
+        public bool GetIsDeveloper()
+        {
+            return ConfigItem.IsDeveloper;
+        }
+
+        public void SetIsDeveloper(bool value)
+        {
+            ConfigItem.IsDeveloper = value;
             IsDirty = true;
             RefreshItem();
         }
@@ -70,10 +85,13 @@ namespace UEC
             var uLab = element.Q<Label>("username");
             var tLab = element.Q<Label>("token");
             var sLab = element.Q<Label>("scopes");
+            var tag = element.Q<Label>("developer_tag");
 
             uLab.text = config.Username;
             tLab.text = config.Token;
             sLab.text = config.GetScopesOverview();
+            tag.SetDisplay(config.IsDeveloper);
+            tLab.SetDisplay(false);
 
             uLab.style.overflow = Overflow.Hidden;
             tLab.style.overflow = Overflow.Hidden;
