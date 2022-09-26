@@ -43,6 +43,11 @@ namespace UEC
 
         public void Update()
         {
+            if (!File.Exists(UPMConfigPath))
+            {
+                File.WriteAllText(UPMConfigPath, "");
+            }
+
             var lines = File.ReadLines(UPMConfigPath);
             var configLines = new List<string>();
 

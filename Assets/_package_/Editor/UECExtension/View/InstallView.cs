@@ -19,6 +19,8 @@ namespace UEC
         private VisualElementCache _cache;
         private UECContext context => UI.Context;
 
+        private Dictionary<string, VisualElement> addButtons;
+
         protected override void OnInitialize(VisualElement parent)
         {
             var temp = parent.Q("Install_view_root");
@@ -26,31 +28,30 @@ namespace UEC
             Add(temp);
             _cache = new VisualElementCache(temp);
 
+            addButtons = new Dictionary<string, VisualElement>();
+
             var ibtn = _cache.Get<Button>("install_btn");
-            ibtn.clicked += () =>
-            {
-                // Client.Add("com.chino.object.pool:0.0.2");
-                list();
-                Debug.Log("sss");
-            };
-            Refresh();
+            // ibtn.clicked += () => { list(); };
+            ibtn.SetDisplay(false);
 
-            var btn = new Button();
-            btn.text = "list";
-            btn.clicked += () => { list(); };
-            ibtn.parent.Add(btn);
+            addButton(ibtn.parent, "com.chino.upm.kits");
+            addButton(ibtn.parent, "com.chino.upm.list");
+            
+            list();
+        }
 
-            btn = new Button();
-            btn.text = "add";
+        private void addButton(VisualElement parent, string packageId)
+        {
+            var btn = new Button {text = packageId};
             btn.clicked += () =>
             {
-                // add("com.chino.object.pool@0.0.2");
-                Client.Add("com.chino.object.pool@0.0.2");
+                add(packageId);
             };
-            ibtn.parent.Add(btn);
-
-            Self.SetDisplay(false);
+            parent.Add(btn);
+            addButtons.Add(packageId, btn);
+            btn.SetEnabled(true);
         }
+
 
         public void Refresh()
         {
@@ -58,6 +59,7 @@ namespace UEC
 
         private async void list()
         {
+            Self.SetEnabled(false);
             var request = Client.List(true, true);
             var condition = new TaskCondition();
             await condition.WaitUntilProgress(() => request.IsCompleted);
@@ -68,21 +70,20 @@ namespace UEC
                 success = false;
             }
 
-            var list = new Dictionary<string, PackageInfo>();
             if (success)
             {
                 foreach (var package in request.Result)
                 {
-                    list.Add(package.name, package);
-                    // Debug.Log(package.name);
-
-                    Debug.Log(package.packageId);
+                    addButtons.TryGetValue(package.name, out var ve);
+                    ve?.SetEnabled(false);
                 }
             }
+            Self.SetEnabled(true);
         }
 
         private async void add(string packageId)
         {
+            Self.SetEnabled(false);
             var request = Client.Add(packageId);
             var condition = new TaskCondition();
             await condition.WaitUntilProgress(() => request.IsCompleted);
@@ -92,6 +93,8 @@ namespace UEC
                 Debug.LogError($"AddPackageAsync Failure: {request.Error.message}");
                 success = false;
             }
+            Self.SetEnabled(true);
+            list();
         }
     }
 

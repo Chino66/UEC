@@ -10,7 +10,7 @@ namespace UEC
         [MenuItem("Tools/UECWindow")]
         private static void ShowWindow()
         {
-            var window = CreateWindow<UECWindow>();
+            var window = GetWindow<UECWindow>();
             window.minSize = new Vector2(400, 500);
             window.titleContent = new GUIContent("UEC");
             window.Show();
