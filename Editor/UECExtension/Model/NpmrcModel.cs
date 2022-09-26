@@ -38,6 +38,11 @@ namespace UEC
 
         public void Update()
         {
+            if (!File.Exists(NpmrcPath))
+            {
+                File.WriteAllText(NpmrcPath, "");
+            }
+
             var lines = File.ReadLines(NpmrcPath);
             var configLines = new List<string>();
 

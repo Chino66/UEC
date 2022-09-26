@@ -86,10 +86,10 @@
             </ui:Box>
             <ui:Box name="Install_view_root" style="border-left-color: rgba(128, 128, 128, 0.5); border-right-color: rgba(128, 128, 128, 0.5); border-top-color: rgba(128, 128, 128, 0.5); border-bottom-color: rgba(128, 128, 128, 0.5); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; display: flex; margin-top: 5px;">
                 <ui:Box name="title" class="row" style="background-color: rgba(182, 182, 182, 0);">
-                    <ui:Label text="Install" style="-unity-font-style: bold; width: auto;" />
+                    <ui:Label text="Quick installation" style="-unity-font-style: bold; width: auto;" />
                     <ui:Button text="view manifest.json" display-tooltip-when-elided="true" name="view_manifest" style="flex-shrink: 1; flex-grow: 0; width: auto; background-color: rgba(88, 88, 88, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 2px; margin-right: 2px; margin-top: 0; margin-bottom: 0; color: rgb(0, 142, 255); flex-direction: row-reverse; display: none;" />
                 </ui:Box>
-                <ui:Button text="Button" display-tooltip-when-elided="true" name="install_btn" />
+                <ui:Button text="Refresh" display-tooltip-when-elided="true" name="install_btn" />
             </ui:Box>
         </ui:ScrollView>
     </ui:VisualElement>
