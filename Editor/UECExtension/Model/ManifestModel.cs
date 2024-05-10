@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using UnityEditor;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
