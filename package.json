@@ -1,8 +1,11 @@
 {
   "name": "com.chino.github.unity.uec",
   "displayName": "UPM Environment Configure",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "unity": "2020.1",
   "description": "UPM Environment Configure UPM环境配置插件",
-  "type": "tool"
+  "type": "tool",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "2.0.0"
+  }
 }
